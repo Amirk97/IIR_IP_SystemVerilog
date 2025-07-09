@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "IIR_filter.h"
 
+#define FXD_POINT_COEFF (1 << 13)  // For 13 fractional numbers
+
 
 typedef struct{
 	short bass;
@@ -11,11 +13,12 @@ typedef struct{
 	short volume;
 }rot_pos_struct;
 
-
-
 typedef struct{
 	float input_coeff[INPUT_BUFFER_LENGTH];
 	float output_coeff[OUTPUT_BUFFER_LENGTH];
+
+	const short fabric_input_coeff[INPUT_BUFFER_LENGTH];
+	const short fabric_output_coeff[OUTPUT_BUFFER_LENGTH];  
 }coeff_struct;
 
 typedef enum{
