@@ -56,7 +56,9 @@ module IIR
    logic signed [MULTIPLY_WIDTH:0] multi_prod_y [0:OUTPUT_TAPS-1];
 
    logic signed [I_ACC_WIDTH:0]    acc_x ;
+   logic signed [I_ACC_WIDTH:0]    acc_x_comb ;
    logic signed [O_ACC_WIDTH:0]    acc_y ;
+   logic signed [O_ACC_WIDTH:0]    acc_y_comb;
    logic signed [RES_ACC_WIDTH:0]  acc_res;
    logic signed [RES_ACC_WIDTH:0]  acc_res_rounded;
 
@@ -64,7 +66,6 @@ module IIR
    logic                           output_en;   
 
    logic [DATA_WIDTH-1:0]          y;   
-   assign y_o = y; 
 
    // Data path
    genvar i;
@@ -84,14 +85,12 @@ module IIR
                else
                  input_tap [i] <= input_tap[i-1];
             end
-            else begin
-               acc_x += multi_prod_x[i];         
-            end
          end
 
-
          multiplier_wrapper
-           #(.USE_IP(1))
+           #(.USE_IP(1),
+             .A_WIDTH(DATA_WIDTH),
+             .B_WIDTH(COEFF_WIDTH))
          i_muiltplier_inst (
                             .a(input_tap[i]),
                             .b(coeff_x[i]),
@@ -100,6 +99,11 @@ module IIR
       end : input_taps
    endgenerate
 
+   always_comb begin
+      for (int i=0; i<INPUT_TAPS; i++) begin
+         acc_x_comb += multi_prod_x[i];
+      end
+   end
 
    generate
 
@@ -108,7 +112,6 @@ module IIR
             if (~rst_i) begin             
                output_tap[i] <= '0;
                coeff_y[i] <= '0;
-               acc_y[i] <= '0;               
             end
             else if (tap_en) begin
                coeff_y[i] <= coeff_y_i[i];            
@@ -117,16 +120,12 @@ module IIR
                else
                  output_tap [i] <= output_tap[i-1];
             end
-            else begin
-               acc_y += multi_prod_y[i];
-               if (output_en)
-                 y_o <= y;
-            end
          end
 
-
          multiplier_wrapper
-           #(.USE_IP(1))
+           #(.USE_IP(1),
+             .A_WIDTH(DATA_WIDTH),
+             .B_WIDTH(COEFF_WIDTH))
          o_muiltplier_inst (
                             .a(output_tap[i]),
                             .b(coeff_y[i]),
@@ -134,6 +133,27 @@ module IIR
                             .y(multi_prod_y[i]));
       end :  output_taps
    endgenerate
+
+   always_comb begin
+      for (int i=0; i<OUTPUT_TAPS; i++) begin
+         acc_y_comb += multi_prod_y[i];
+      end
+   end
+
+   always_ff @(posedge clk_i or negedge rst_i) begin
+      if (~rst_i) begin
+         acc_x <= '0;
+         acc_y <= '0;
+         y_o <= '0;      
+      end
+      else begin
+         acc_x <= acc_x_comb;
+         acc_y <= acc_y_comb;
+         if (output_en)
+           y_o <= y;         
+      end
+   end  
+
    
    // Rounding
    assign acc_res = acc_x - acc_y;   
@@ -147,7 +167,7 @@ module IIR
          else
            y  = {1'b0, {(DATA_WIDTH-1){1'b1}}};
       end else begin
-         y = acc_res_rounded[FRACTIONAL_WIDTH:FRACTIONAL_WIDTH+DATA_WIDTH-1];         
+         y = acc_res_rounded[FRACTIONAL_WIDTH+DATA_WIDTH-1:FRACTIONAL_WIDTH];         
       end
    end
 

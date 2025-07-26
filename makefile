@@ -1,21 +1,28 @@
 # Makefile
 
 # Default project (override with 'make proj=design2')
-PROJECT_PATH\ ?= /media/amir/1C8F205019F09CF8/Users/amir9/Documents/EQU/EQU_vivado_project/EQU_vivado_project.xpr
+proj_name = 
 
 # Vivado executable
 VIVADO = vivado
 
 # Target TCL script path
-MAKE_PROJECT_TCL = ../scripts/make_vivado_project.tcl
+MAKE_PROJECT_TCL = ./scripts/make_project.tcl
 
-elab_project:
-	@echo "Building project: $(proj)"
-	$(VIVADO) -mode batch -source $(MAKE_PROJECT_TCL) -tclargs $(PROJECT_PATH)
+TOOL =
 
-compile_project:
+#FILES = $(shell pwd)/$(shell python3 yaml_parser.py files.yaml) 
+FILES = $(shell python3 yaml_parser.py files.yaml) 
+
+#CURRENT_DIR
+
+project:
 	@echo "Building project: $(proj)"
 	$(VIVADO) -mode batch -source $(MAKE_PROJECT_TCL)
+
+compile_xcelium:
+	@echo $(FILES)
+	@xrun $(FILES)
 
 clean:
 	@echo "Cleaning generated files..."

@@ -1,0 +1,56 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company:
+// Engineer:
+//
+// Create Date: 07/15/2025 07:04:52 PM
+// Design Name:
+// Module Name: tb_IIR
+// Project Name:
+// Target Devices:
+// Tool Versions:
+// Description:
+//
+// Dependencies:
+//
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module top_tb_IIR;
+
+   logic clk, rst;
+
+   always #5 clk = ~clk;      
+
+   IIR #(
+         .INPUT_TAPS (3),
+         .OUTPUT_TAPS (2),
+         .DATA_WIDTH (24),
+         .COEFF_WIDTH (18))
+   IIR_inst (
+             .x_i(IIR_if_inst.dut.x_i),
+             .y_o(IIR_if_inst.dut.y_o),
+             .coeff_x_i(IIR_if_inst.dut.coeff_x_i),
+             .coeff_y_i(IIR_if_inst.dut.coeff_y_i),
+             .data_READY(IIR_if_inst.dut.data_READY),
+             .data_DONE(IIR_if_inst.dut.data_DONE),
+             .clk_i(IIR_if_inst.dut.clk_i),
+             .rst_i(IIR_if_inst.dut.rst_i));
+
+   
+   IIR_if #(
+            .INPUT_TAPS (3),
+            .OUTPUT_TAPS (2),
+            .DATA_WIDTH (24),
+            .COEFF_WIDTH (18))
+   IIR_if_inst (
+                .clk_i(clk),
+                .rst_i(rst));
+
+
+
+endmodule
