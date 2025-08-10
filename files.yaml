@@ -8,3 +8,8 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_if.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
 
+include_dirs:
+  uvm: /tools/Cadence/installs/XCELIUM2403/tools.lnx86/methodology/UVM/CDNS-IEEE-ML/sv/src
+
+
+
