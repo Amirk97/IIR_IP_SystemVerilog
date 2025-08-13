@@ -1,3 +1,4 @@
+`include "uvm_macros.svh"
 import uvm_pkg::*;
 
 `timescale 1ns / 1ps
@@ -53,6 +54,8 @@ module top_tb_IIR;
                 .clk_i(clk),
                 .rst_i(rst));
 
-
+   initial begin
+      run_test("my_test");
+   end
 
 endmodule
