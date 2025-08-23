@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "IIR_filter.h"
 
-#define FXD_POINT_COEFF (1 << 13)  // For 13 fractional numbers
+#define FXD_POINT_COEFF (1 << 15)  // For 15 fractional numbers
 
 
 typedef struct{
@@ -12,14 +12,6 @@ typedef struct{
 	short treble;
 	short volume;
 }rot_pos_struct;
-
-typedef struct{
-	float input_coeff[INPUT_BUFFER_LENGTH];
-	float output_coeff[OUTPUT_BUFFER_LENGTH];
-
-	const short fabric_input_coeff[INPUT_BUFFER_LENGTH];
-	const short fabric_output_coeff[OUTPUT_BUFFER_LENGTH];  
-}coeff_struct;
 
 typedef enum{
 	INIT_ST,
@@ -38,14 +30,7 @@ typedef enum{
 	AB_NON_IDLE
 }AB_sig_state_typedef;
 
-
-
-
 coeff_struct update_bass_equ_coeff(short );
 coeff_struct update_treble_equ_coeff(short );
 
-
-
-
-	
 #endif

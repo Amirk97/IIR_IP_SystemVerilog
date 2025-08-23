@@ -9,6 +9,11 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_env.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_test.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequence_item.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequence.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequencer.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_driver.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_monitor.sv
 
 
 include_dirs:

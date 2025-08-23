@@ -37,7 +37,7 @@ module IIR
     input logic [DATA_WIDTH-1:0]  x_i,
     output logic [DATA_WIDTH-1:0] y_o,
 
-    input logic [COEFF_WIDTH-1:0] coeff_x_i [0:INPUT_TAPS], 
+    input logic [COEFF_WIDTH-1:0] coeff_x_i [0:INPUT_TAPS-1], 
     input logic [COEFF_WIDTH-1:0] coeff_y_i [0:OUTPUT_TAPS-1], 
    
     input logic                   data_READY,

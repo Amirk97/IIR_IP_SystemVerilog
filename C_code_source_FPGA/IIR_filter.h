@@ -25,6 +25,13 @@ typedef struct {
 
 }filter;
 
+typedef struct{
+	float input_coeff[INPUT_BUFFER_LENGTH];
+	float output_coeff[OUTPUT_BUFFER_LENGTH];
+
+	const short fabric_input_coeff[INPUT_BUFFER_LENGTH];
+	const short fabric_output_coeff[OUTPUT_BUFFER_LENGTH];  
+}coeff_struct;
 
 void init_filter(filter *);
 short compute_filter_output(filter* , short, float[], float[] );
