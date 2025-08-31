@@ -88,7 +88,7 @@ module IIR
          end
 
          multiplier_wrapper
-           #(.USE_IP(1),
+           #(.USE_IP(0),
              .A_WIDTH(DATA_WIDTH),
              .B_WIDTH(COEFF_WIDTH))
          i_muiltplier_inst (
@@ -100,6 +100,7 @@ module IIR
    endgenerate
 
    always_comb begin
+      acc_x_comb = '0;   
       for (int i=0; i<INPUT_TAPS; i++) begin
          acc_x_comb += multi_prod_x[i];
       end
@@ -123,7 +124,7 @@ module IIR
          end
 
          multiplier_wrapper
-           #(.USE_IP(1),
+           #(.USE_IP(0),
              .A_WIDTH(DATA_WIDTH),
              .B_WIDTH(COEFF_WIDTH))
          o_muiltplier_inst (
@@ -135,6 +136,7 @@ module IIR
    endgenerate
 
    always_comb begin
+      acc_y_comb = '0;   
       for (int i=0; i<OUTPUT_TAPS; i++) begin
          acc_y_comb += multi_prod_y[i];
       end
@@ -161,7 +163,7 @@ module IIR
 
    // Check for OF and UF assuming 24bits of data  
    always_comb begin
-      if (^acc_res_rounded[RES_ACC_WIDTH:(FRACTIONAL_WIDTH+DATA_WIDTH-2)]) begin
+      if (^acc_res_rounded[RES_ACC_WIDTH:(FRACTIONAL_WIDTH+DATA_WIDTH-1)]) begin
          if(acc_res_rounded[RES_ACC_WIDTH])
            y  = {1'b1, {(DATA_WIDTH-1){1'b0}}};
          else

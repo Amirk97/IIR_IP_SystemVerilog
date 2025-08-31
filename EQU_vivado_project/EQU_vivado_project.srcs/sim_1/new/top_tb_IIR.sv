@@ -1,5 +1,3 @@
-`include "uvm_macros.svh"
-import uvm_pkg::*;
 
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
@@ -27,6 +25,7 @@ module top_tb_IIR;
 
    logic clk, rst;
 
+   initial clk = '0;   
    always #5 clk = ~clk;      
 
    IIR #(
@@ -55,7 +54,14 @@ module top_tb_IIR;
                 .rst_i(rst));
 
    initial begin
+      uvm_config_db#(virtual IIR_if)::set(null, "*", "if", IIR_if_inst);
       run_test("my_test");
    end
 
+   initial begin
+      rst <= 1'b0;
+      repeat(2) @(posedge clk);
+      rst <= 1'b1;
+      `uvm_info("RSTDRV","Reset was released here!", UVM_MEDIUM);    
+   end
 endmodule

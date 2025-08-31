@@ -11,11 +11,7 @@ class my_driver extends uvm_driver#(basic_sequence_item#());
    endfunction
 
    virtual function void build_phase(uvm_phase phase);
-      super.build_phase(phase);
-      
-      if(!uvm_config_db#(virtual IIR_if)::get(this, "", "if", my_if)) begin
-         `uvm_fatal("NOVIF",{"Virtual interface must be set for: ", get_full_name()})
-      end
+      super.build_phase(phase);      
    endfunction
 
    virtual task run_phase(uvm_phase phase);

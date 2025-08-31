@@ -16,11 +16,6 @@ class my_monitor extends uvm_monitor;
       super.build_phase(phase);
       item = basic_sequence_item#()::type_id::create("item");
       monitor_port = new("monitor_port", this);
-
-      if(!uvm_config_db#(virtual IIR_if)::get(this, "", "if", my_if)) begin
-         `uvm_fatal("NOVIF",{"Virtual interface must be set for: ", get_full_name()})
-      end
-
    endfunction
 
    virtual task run_phase(uvm_phase phase);

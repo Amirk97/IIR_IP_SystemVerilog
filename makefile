@@ -15,15 +15,15 @@ UVM_SRC_PATH = $(shell python3 yaml_parser.py files.yaml uvm_src_path)
 
 CONTAINER_NAME ?= xc_env_cnt
 
-#FILES = $(shell pwd)/$(shell python3 yaml_parser.py files.yaml) 
 
-#CURRENT_DIR
+#compile_C_files:
+#	gcc -Wall -Wextra -o model
 
 project:
 	@echo "Building project: $(proj)"
 	$(VIVADO) -mode batch -source $(MAKE_PROJECT_TCL)
 
-run_container:
+create_container:
 	docker run --name $(CONTAINER_NAME) \
 	-v /media/amir/1C8F205019F09CF8/Users/amir9/Documents/EQU/:/proj \
 	-v /tools/Cadence:/mnt/Cadence \
@@ -41,7 +41,7 @@ compile_xcelium_tb:
 	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 	echo $$FILES; \
 	echo $$UVM_SRC_PATH; \
-  xrun -uvm  $$FILES  -64bit
+  xrun -gui -clean -UVMLINEDEBUG -access +rwc -uvm  $$FILES  -64bit
 #  irun -uvm  $$FILES  -64bit
 ##	xrun -uvm -sv $$FILES -incdir $(UVM_SRC_PATH) $(UVM_SRC_PATH)/uvm_pkg.sv
 
