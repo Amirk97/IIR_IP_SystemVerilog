@@ -41,7 +41,7 @@ compile_xcelium_tb:
 	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 	echo $$FILES; \
 	echo $$UVM_SRC_PATH; \
-  xrun -gui -clean -UVMLINEDEBUG -access +rwc -uvm  $$FILES  -64bit
+  xrun -clean -UVMLINEDEBUG -access +rwc -uvm  $$FILES  -64bit
 #  irun -uvm  $$FILES  -64bit
 ##	xrun -uvm -sv $$FILES -incdir $(UVM_SRC_PATH) $(UVM_SRC_PATH)/uvm_pkg.sv
 

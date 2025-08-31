@@ -6,7 +6,7 @@ class my_driver extends uvm_driver#(basic_sequence_item#());
 
    virtual IIR_if my_if;   
 
-   function new ( string name, uvm_component parent);
+   function new (string name, uvm_component parent);
       super.new(name, parent);
    endfunction
 

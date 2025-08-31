@@ -12,6 +12,7 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_driver.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_monitor.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_agent.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_scoreboard.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_env.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_test.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
