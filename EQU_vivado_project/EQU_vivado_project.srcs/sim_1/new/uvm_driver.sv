@@ -24,7 +24,10 @@ class my_driver extends uvm_driver#(basic_sequence_item#());
          my_if.coeff_y_i <= item.coeff_y_i;
          @(posedge my_if.data_DONE);
          my_if.data_READY <= '0;        
-         seq_item_port.item_done(item);
+         seq_item_port.item_done();
+         `uvm_info("DRIVER",
+                   "Drove item",
+                   UVM_MEDIUM)
       end
    endtask
    

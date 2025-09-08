@@ -13,8 +13,15 @@ TOOL =
 
 UVM_SRC_PATH = $(shell python3 yaml_parser.py files.yaml uvm_src_path)
 
-CONTAINER_NAME ?= xc_env_cnt
+CONTAINER_NAME ?= xc_env_cnt1
 
+GUI ?= 0
+
+ifeq ($(GUI),1)
+GUI_FLAG = -gui
+else
+GUI_FLAG =
+endif
 
 #compile_C_files:
 #	gcc -Wall -Wextra -o model
@@ -25,14 +32,16 @@ project:
 
 create_container:
 	docker run --name $(CONTAINER_NAME) \
+	-e DISPLAY=$DISPLAY \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	-v /media/amir/1C8F205019F09CF8/Users/amir9/Documents/EQU/:/proj \
 	-v /tools/Cadence:/mnt/Cadence \
 	-d xc-env \
-	tail -f /dev/null&& 
+	tail -f /dev/null
 
 start_container:
 	docker start $(CONTAINER_NAME)
-	docker exec $(CONTAINER_NAME) bash -c " cd /proj && source /tools/Cadence/installs/XCELIUM2403/setup_xcelium.sh && make compile_xcelium_tb"
+	docker exec  $(CONTAINER_NAME) bash -c "export DISPLAY=:0 && cd /proj && source /tools/Cadence/installs/XCELIUM2403/setup_xcelium.sh && make compile_xcelium_tb GUI=$(GUI)"
 	docker stop $(CONTAINER_NAME)
 #	docker logs -f xc_env_cnt
 
@@ -41,7 +50,10 @@ compile_xcelium_tb:
 	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 	echo $$FILES; \
 	echo $$UVM_SRC_PATH; \
-  xrun -clean -UVMLINEDEBUG -access +rwc -uvm  $$FILES  -64bit
+	echo $(GUI_FLAG); \
+	echo $(GUI); \
+	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm  $$FILES  -64bit -CFLAGS "-I./C_code_source_FPGA"
+#-svseed 12345
 #  irun -uvm  $$FILES  -64bit
 ##	xrun -uvm -sv $$FILES -incdir $(UVM_SRC_PATH) $(UVM_SRC_PATH)/uvm_pkg.sv
 

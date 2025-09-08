@@ -2,7 +2,7 @@ interface IIR_if # (
                     parameter INPUT_TAPS = 3,
                     parameter OUTPUT_TAPS = 2,
                     parameter DATA_WIDTH = 24,
-                    parameter COEFF_WIDTH = 18)
+                    parameter COEFF_WIDTH = 23)
    (
     input logic clk_i,
     input logic rst_i);

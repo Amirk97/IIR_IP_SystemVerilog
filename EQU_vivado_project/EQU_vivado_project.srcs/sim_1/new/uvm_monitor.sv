@@ -22,6 +22,8 @@ class my_monitor extends uvm_monitor;
 
       forever begin
          @(posedge my_if.data_DONE);
+         item.x_i = my_if.x_i;
+         repeat(2) @(posedge my_if.clk_i);
          item.y_o = my_if.y_o;
          monitor_port.write(item);         
       end

@@ -25,13 +25,14 @@ module IIR
     parameter                          INPUT_TAPS = 3,
     parameter                          OUTPUT_TAPS = 2,
     parameter                          DATA_WIDTH = 24,
-    parameter                          COEFF_WIDTH = 18,
-    localparam                         FRACTIONAL_WIDTH = 15,
+    parameter                          COEFF_WIDTH = 23,
+    localparam                         FRACTIONAL_WIDTH = 20,
     localparam                         MULTIPLY_WIDTH = DATA_WIDTH + COEFF_WIDTH - 1,
     localparam                         I_ACC_WIDTH = MULTIPLY_WIDTH + INPUT_TAPS - 1,
     localparam                         O_ACC_WIDTH = MULTIPLY_WIDTH + OUTPUT_TAPS - 1,
-    localparam                         RES_ACC_WIDTH = (I_ACC_WIDTH>O_ACC_WIDTH) ? (I_ACC_WIDTH +2) : (O_ACC_WIDTH +2), //2 also considering rounding error summation
-    localparam logic [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRACTIONAL_WIDTH-1),
+    localparam                         RES_ACC_WIDTH = (I_ACC_WIDTH>O_ACC_WIDTH) ? (I_ACC_WIDTH +2) : (O_ACC_WIDTH +2), //2 also considering rounding error summation and summing acc_x and acc_y
+    localparam logic signed [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRACTIONAL_WIDTH-1),
+//    localparam logic [RES_ACC_WIDTH:0] ROUNDING_ERROR = 0,
     localparam logic [1:0]             PROCESS_DELAY = 3)
    (
     input logic [DATA_WIDTH-1:0]  x_i,
@@ -159,7 +160,7 @@ module IIR
    
    // Rounding
    assign acc_res = acc_x - acc_y;   
-   assign acc_res_rounded = (acc_res>=0) ?  acc_res + ROUNDING_ERROR : acc_res - ROUNDING_ERROR;
+   assign acc_res_rounded = acc_res + ROUNDING_ERROR;  // Also summation for negative numbers since later on slicing gonna round downwards
 
    // Check for OF and UF assuming 24bits of data  
    always_comb begin

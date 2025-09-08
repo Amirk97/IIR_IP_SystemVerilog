@@ -32,7 +32,7 @@ module top_tb_IIR;
          .INPUT_TAPS (3),
          .OUTPUT_TAPS (2),
          .DATA_WIDTH (24),
-         .COEFF_WIDTH (18))
+         .COEFF_WIDTH (23))
    IIR_inst (
              .x_i(IIR_if_inst.dut.x_i),
              .y_o(IIR_if_inst.dut.y_o),
@@ -48,7 +48,7 @@ module top_tb_IIR;
             .INPUT_TAPS (3),
             .OUTPUT_TAPS (2),
             .DATA_WIDTH (24),
-            .COEFF_WIDTH (18))
+            .COEFF_WIDTH (23))
    IIR_if_inst (
                 .clk_i(clk),
                 .rst_i(rst));

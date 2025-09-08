@@ -38,9 +38,10 @@ void init_filter(filter* IIR_filter) {
 	IIR_filter->output = 0;
 }
 
-short compute_filter_output(filter* IIR_filter, short input, float input_coeff[INPUT_BUFFER_LENGTH], float output_coeff[OUTPUT_BUFFER_LENGTH]) {
+int compute_filter_output(filter* IIR_filter, int input, double input_coeff[INPUT_BUFFER_LENGTH], double output_coeff[OUTPUT_BUFFER_LENGTH]) {
 
 	int8_t saved_index ;
+  double acc=0;
 
 	/* Insert the input in the input buffer */
 	IIR_filter->input_buffer[IIR_filter->input_buffer_index] = input;
@@ -58,6 +59,10 @@ short compute_filter_output(filter* IIR_filter, short input, float input_coeff[I
 	/* Make a copy of input buffer index so we can manipulate it */
 	saved_index = IIR_filter->input_buffer_index;
 
+  printf("In C, recieved input coeffs are: %f %f %f\n", input_coeff[0], input_coeff[1], input_coeff[2]);
+  printf("In C, recieved output coeffs are: %f %f\n", output_coeff[0], output_coeff[1]);
+  fflush(stdout);
+
 	/* Computing the product of multiplication between input buffer and corresponding coefficients */
 	for(uint8_t i =0; i<INPUT_BUFFER_LENGTH; i++) {
 
@@ -65,8 +70,10 @@ short compute_filter_output(filter* IIR_filter, short input, float input_coeff[I
 		if(saved_index < 0) {
 			saved_index = INPUT_BUFFER_LENGTH-1;
 		}
-
-		IIR_filter->output += (short)(input_coeff[i] * IIR_filter->input_buffer[saved_index]);
+    
+		acc += (input_coeff[i] * IIR_filter->input_buffer[saved_index]);
+    printf("In C, Acc_x is %f\n", acc);
+    fflush(stdout);
 	}
 
 	/* Make a copy of output buffer index so we can manipulate it */
@@ -79,18 +86,35 @@ short compute_filter_output(filter* IIR_filter, short input, float input_coeff[I
 		if(saved_index < 0) {
 			saved_index = OUTPUT_BUFFER_LENGTH-1;
 		}
-		IIR_filter->output -= (short)(output_coeff[i] * IIR_filter->output_buffer[saved_index]);
+		acc -= (output_coeff[i] * IIR_filter->output_buffer[saved_index]);
+    printf("In C, Acc_y is %f\n", acc);
+    fflush(stdout);
 	}
 
+  /* Checking the saturation */
+  if (acc >= 8388607) {
+    acc = 8388607;
+  } else if (acc <= -8388608) {
+    acc = -8388608;
+  }
+
+  printf("In C, Final Output before rounding is %f\n", acc);
+  fflush(stdout);
+
+  IIR_filter->output = (int)(round(acc));
+  
 	/* Insert the calculated output into output buffer */
 	IIR_filter->output_buffer[IIR_filter->output_buffer_index] = IIR_filter->output;
-
+  
 	/* Update output Buffer Index */
 	IIR_filter->output_buffer_index ++;
 	if(IIR_filter->output_buffer_index == OUTPUT_BUFFER_LENGTH) {
 
 		IIR_filter->output_buffer_index = 0;
 	}
+
+  printf("In C, Final Output is %d\n", IIR_filter->output);
+  fflush(stdout);
 
 	return IIR_filter->output;
 }
