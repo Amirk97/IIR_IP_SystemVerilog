@@ -29,10 +29,10 @@ module top_tb_IIR;
    always #5 clk = ~clk;      
 
    IIR #(
-         .INPUT_TAPS (3),
-         .OUTPUT_TAPS (2),
-         .DATA_WIDTH (24),
-         .COEFF_WIDTH (23))
+         .INPUT_TAPS  (config_pkg::INPUT_TAPS),
+         .OUTPUT_TAPS (config_pkg::OUTPUT_TAPS),
+         .DATA_WIDTH  (config_pkg::DATA_WIDTH),
+         .COEFF_WIDTH (config_pkg::COEFF_WIDTH))
    IIR_inst (
              .x_i(IIR_if_inst.dut.x_i),
              .y_o(IIR_if_inst.dut.y_o),
@@ -41,14 +41,15 @@ module top_tb_IIR;
              .data_READY(IIR_if_inst.dut.data_READY),
              .data_DONE(IIR_if_inst.dut.data_DONE),
              .clk_i(IIR_if_inst.dut.clk_i),
-             .rst_i(IIR_if_inst.dut.rst_i));
+             .rst_i(IIR_if_inst.dut.rst_i)
+             );
 
    
    IIR_if #(
-            .INPUT_TAPS (3),
-            .OUTPUT_TAPS (2),
-            .DATA_WIDTH (24),
-            .COEFF_WIDTH (23))
+            .INPUT_TAPS  (config_pkg::INPUT_TAPS),
+            .OUTPUT_TAPS (config_pkg::OUTPUT_TAPS),
+            .DATA_WIDTH  (config_pkg::DATA_WIDTH),
+            .COEFF_WIDTH (config_pkg::COEFF_WIDTH))
    IIR_if_inst (
                 .clk_i(clk),
                 .rst_i(rst));

@@ -7,6 +7,7 @@ files:
   tb:
     - ./C_code_source_FPGA/IIR_filter.c
     - ./C_code_source_FPGA/dpi_functions.c
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/config_pkg.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_if.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequence_item.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequence.sv
