@@ -16,8 +16,12 @@ class my_test extends uvm_test;
 
    virtual function void build_phase(uvm_phase phase);
       super.build_phase(phase);
+      factory.set_type_override_by_type(basic_sequence_item#()::get_type(), const_coeff_item::get_type());
+      factory.print();
+
       env = my_env::type_id::create("env" , this);
       seq = my_sequence::type_id::create("seq", this);
+
       if(!uvm_config_db#(virtual IIR_if)::get(this, "", "if", my_if)) begin
          `uvm_fatal("NOVIF",{"Virtual interface must be set for: ", get_full_name()})
       end

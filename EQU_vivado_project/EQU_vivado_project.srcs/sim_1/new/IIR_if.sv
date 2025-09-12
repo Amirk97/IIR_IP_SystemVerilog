@@ -1,8 +1,10 @@
 interface IIR_if # (
-                    parameter INPUT_TAPS = 3,
-                    parameter OUTPUT_TAPS = 2,
-                    parameter DATA_WIDTH = 24,
-                    parameter COEFF_WIDTH = 23)
+                    parameter INPUT_TAPS = config_pkg::INPUT_TAPS,
+                    parameter OUTPUT_TAPS = config_pkg::OUTPUT_TAPS,
+                    parameter DATA_WIDTH = config_pkg::DATA_WIDTH,
+                    parameter COEFF_WIDTH = config_pkg::COEFF_WIDTH,
+                    parameter DATA_FRAC_WIDTH = config_pkg::DATA_FRAC_WIDTH, 
+                    parameter COEFF_FRAC_WIDTH = config_pkg::COEFF_FRAC_WIDTH)
    (
     input logic clk_i,
     input logic rst_i);

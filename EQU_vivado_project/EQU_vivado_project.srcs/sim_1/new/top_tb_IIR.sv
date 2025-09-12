@@ -19,7 +19,7 @@
 // Additional Comments:
 //
 //////////////////////////////////////////////////////////////////////////////////
-
+import config_pkg::*;
 
 module top_tb_IIR;
 
@@ -32,7 +32,10 @@ module top_tb_IIR;
          .INPUT_TAPS  (config_pkg::INPUT_TAPS),
          .OUTPUT_TAPS (config_pkg::OUTPUT_TAPS),
          .DATA_WIDTH  (config_pkg::DATA_WIDTH),
-         .COEFF_WIDTH (config_pkg::COEFF_WIDTH))
+         .COEFF_WIDTH (config_pkg::COEFF_WIDTH),
+         .DATA_FRAC_WIDTH (config_pkg::DATA_FRAC_WIDTH), 
+         .COEFF_FRAC_WIDTH (config_pkg::COEFF_FRAC_WIDTH)
+         )
    IIR_inst (
              .x_i(IIR_if_inst.dut.x_i),
              .y_o(IIR_if_inst.dut.y_o),
@@ -49,7 +52,10 @@ module top_tb_IIR;
             .INPUT_TAPS  (config_pkg::INPUT_TAPS),
             .OUTPUT_TAPS (config_pkg::OUTPUT_TAPS),
             .DATA_WIDTH  (config_pkg::DATA_WIDTH),
-            .COEFF_WIDTH (config_pkg::COEFF_WIDTH))
+            .COEFF_WIDTH (config_pkg::COEFF_WIDTH),
+            .DATA_FRAC_WIDTH (config_pkg::DATA_FRAC_WIDTH), 
+            .COEFF_FRAC_WIDTH (config_pkg::COEFF_FRAC_WIDTH)
+            )
    IIR_if_inst (
                 .clk_i(clk),
                 .rst_i(rst));
@@ -65,4 +71,5 @@ module top_tb_IIR;
       rst <= 1'b1;
       `uvm_info("RSTDRV","Reset was released here!", UVM_MEDIUM);    
    end
+
 endmodule

@@ -22,18 +22,20 @@
 
 module IIR 
   #(
-    parameter                          INPUT_TAPS = 3,
-    parameter                          OUTPUT_TAPS = 2,
-    parameter                          DATA_WIDTH = 24,
-    parameter                          COEFF_WIDTH = 23,
-    localparam                         FRACTIONAL_WIDTH = 20,
-    localparam                         MULTIPLY_WIDTH = DATA_WIDTH + COEFF_WIDTH - 1,
-    localparam                         I_ACC_WIDTH = MULTIPLY_WIDTH + INPUT_TAPS - 1,
-    localparam                         O_ACC_WIDTH = MULTIPLY_WIDTH + OUTPUT_TAPS - 1,
-    localparam                         RES_ACC_WIDTH = (I_ACC_WIDTH>O_ACC_WIDTH) ? (I_ACC_WIDTH +2) : (O_ACC_WIDTH +2), //2 also considering rounding error summation and summing acc_x and acc_y
-    localparam logic signed [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRACTIONAL_WIDTH-1),
+    parameter                                 INPUT_TAPS = 3,
+    parameter                                 OUTPUT_TAPS = 2,
+    parameter                                 DATA_WIDTH = 24,
+    parameter                                 COEFF_WIDTH = 18,
+    parameter                                 DATA_FRAC_WIDTH = 0,
+    parameter                                 COEFF_FRAC_WIDTH = 15,
+    localparam                                FRAC_WIDTH = DATA_FRAC_WIDTH + COEFF_FRAC_WIDTH,
+    localparam                                MULTIPLY_WIDTH = DATA_WIDTH + COEFF_WIDTH - 1,
+    localparam                                I_ACC_WIDTH = MULTIPLY_WIDTH + INPUT_TAPS - 1,
+    localparam                                O_ACC_WIDTH = MULTIPLY_WIDTH + OUTPUT_TAPS - 1,
+    localparam                                RES_ACC_WIDTH = (I_ACC_WIDTH>O_ACC_WIDTH) ? (I_ACC_WIDTH +2) : (O_ACC_WIDTH +2), //2 also considering rounding error summation and summing acc_x and acc_y
+    localparam logic signed [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRAC_WIDTH-1),
 //    localparam logic [RES_ACC_WIDTH:0] ROUNDING_ERROR = 0,
-    localparam logic [1:0]             PROCESS_DELAY = 3)
+    localparam logic [1:0]                    PROCESS_DELAY = 3)
    (
     input logic [DATA_WIDTH-1:0]  x_i,
     output logic [DATA_WIDTH-1:0] y_o,
@@ -164,13 +166,13 @@ module IIR
 
    // Check for OF and UF assuming 24bits of data  
    always_comb begin
-      if (^acc_res_rounded[RES_ACC_WIDTH:(FRACTIONAL_WIDTH+DATA_WIDTH-1)]) begin
+      if (^acc_res_rounded[RES_ACC_WIDTH:(FRAC_WIDTH+DATA_WIDTH-1)]) begin
          if(acc_res_rounded[RES_ACC_WIDTH])
            y  = {1'b1, {(DATA_WIDTH-1){1'b0}}};
          else
            y  = {1'b0, {(DATA_WIDTH-1){1'b1}}};
       end else begin
-         y = acc_res_rounded[FRACTIONAL_WIDTH+DATA_WIDTH-1:FRACTIONAL_WIDTH];         
+         y = acc_res_rounded[FRAC_WIDTH+DATA_WIDTH-1:FRAC_WIDTH];         
       end
    end
 
