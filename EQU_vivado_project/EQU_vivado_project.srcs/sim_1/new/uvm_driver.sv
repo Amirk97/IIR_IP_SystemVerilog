@@ -18,10 +18,6 @@ class my_driver extends uvm_driver#(basic_sequence_item#());
       basic_sequence_item#() item;
       forever begin
          seq_item_port.get_next_item(item);
-         `uvm_info("DRIVER",
-                   $sformatf("Recieved Coeff: %d", $signed(item.coeff_x_i[0])),
-                   UVM_MEDIUM)
-
          my_if.x_i <= item.x_i;
          my_if.data_READY <= '1;
          my_if.coeff_x_i <= item.coeff_x_i;

@@ -1,5 +1,5 @@
-`include "uvm_macros.svh"
 import uvm_pkg::*;
+`include "uvm_macros.svh"
 
 class my_test extends uvm_test;
 
@@ -17,7 +17,6 @@ class my_test extends uvm_test;
    virtual function void build_phase(uvm_phase phase);
       super.build_phase(phase);
       factory.set_type_override_by_type(basic_sequence_item#()::get_type(), const_coeff_item::get_type());
-      factory.print();
 
       env = my_env::type_id::create("env" , this);
       seq = my_sequence::type_id::create("seq", this);
@@ -30,6 +29,11 @@ class my_test extends uvm_test;
    virtual function void connect_phase(uvm_phase phase);
       super.connect_phase(phase);
    endfunction // connect_phase
+
+   virtual function void start_of_simulation_phase(uvm_phase phase);
+      super.start_of_simulation_phase(phase);
+      factory.print();
+   endfunction
 
    virtual task reset_phase(uvm_phase phase);
       super.reset_phase(phase);
@@ -49,6 +53,12 @@ class my_test extends uvm_test;
       phase.drop_objection(this);   // Let phase finish
    endtask
 
+   virtual task shutdown_phase(uvm_phase phase);
+      super.shutdown_phase(phase);
+      phase.raise_objection(this);  // Prevent phase from finishing
+      repeat(2) @(posedge my_if.clk_i); // wait until last item is compared
+      phase.drop_objection(this);   // Let phase finish
+   endtask
 
    virtual task run_phase(uvm_phase phase);
       phase.raise_objection(this);

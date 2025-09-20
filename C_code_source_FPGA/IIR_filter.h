@@ -31,8 +31,8 @@ typedef struct{
 	double input_coeff[INPUT_BUFFER_LENGTH];
 	double output_coeff[OUTPUT_BUFFER_LENGTH];
 
-	const short fabric_input_coeff[INPUT_BUFFER_LENGTH];
-	const short fabric_output_coeff[OUTPUT_BUFFER_LENGTH];  
+//	const short fabric_input_coeff[INPUT_BUFFER_LENGTH];
+//	const short fabric_output_coeff[OUTPUT_BUFFER_LENGTH];  
 }coeff_struct;
 
 void init_filter(filter *);

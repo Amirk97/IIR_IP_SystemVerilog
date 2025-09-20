@@ -52,7 +52,7 @@ compile_xcelium_tb:
 	echo $$UVM_SRC_PATH; \
 	echo $(GUI_FLAG); \
 	echo $(GUI); \
-	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm  $$FILES  -64bit -CFLAGS "-I./C_code_source_FPGA"
+	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm  $$FILES  -64bit -CFLAGS "-I./C_code_source_FPGA" +UVM_TESTNAME=rand_coeff_test
 #-svseed 12345
 #  irun -uvm  $$FILES  -64bit
 ##	xrun -uvm -sv $$FILES -incdir $(UVM_SRC_PATH) $(UVM_SRC_PATH)/uvm_pkg.sv
