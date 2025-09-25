@@ -23,12 +23,24 @@ else
 GUI_FLAG =
 endif
 
+TESTCASE ?= const_coeff_test
+
 #compile_C_files:
 #	gcc -Wall -Wextra -o model
 
 project:
 	@echo "Building project: $(proj)"
 	$(VIVADO) -mode batch -source $(MAKE_PROJECT_TCL)
+
+regression:
+	FILE_TYPE=tests; \
+	TESTS=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
+	echo $$TESTS; \
+	docker start $(CONTAINER_NAME); \
+	for t in $$TESTS;do \
+		make exec_docker TESTCASE=$$t; \
+	done; \
+	docker stop $(CONTAINER_NAME)
 
 create_container:
 	docker run --name $(CONTAINER_NAME) \
@@ -39,9 +51,12 @@ create_container:
 	-d xc-env \
 	tail -f /dev/null
 
-start_container:
+exec_docker:
+	docker exec  $(CONTAINER_NAME) bash -c "export DISPLAY=:0 && cd /proj && source /tools/Cadence/installs/XCELIUM2403/setup_xcelium.sh && make compile_xcelium_tb GUI=$(GUI) TESTCASE=$(TESTCASE)"
+
+run_container:
 	docker start $(CONTAINER_NAME)
-	docker exec  $(CONTAINER_NAME) bash -c "export DISPLAY=:0 && cd /proj && source /tools/Cadence/installs/XCELIUM2403/setup_xcelium.sh && make compile_xcelium_tb GUI=$(GUI)"
+	docker exec  $(CONTAINER_NAME) bash -c "export DISPLAY=:0 && cd /proj && source /tools/Cadence/installs/XCELIUM2403/setup_xcelium.sh && make compile_xcelium_tb GUI=$(GUI) TESTCASE=$(TESTCASE)"
 	docker stop $(CONTAINER_NAME)
 #	docker logs -f xc_env_cnt
 
@@ -52,10 +67,13 @@ compile_xcelium_tb:
 	echo $$UVM_SRC_PATH; \
 	echo $(GUI_FLAG); \
 	echo $(GUI); \
-	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm  $$FILES  -64bit -CFLAGS "-I./C_code_source_FPGA" +UVM_TESTNAME=rand_coeff_test
-#-svseed 12345
-#  irun -uvm  $$FILES  -64bit
-##	xrun -uvm -sv $$FILES -incdir $(UVM_SRC_PATH) $(UVM_SRC_PATH)/uvm_pkg.sv
+	echo $(TESTCASE); \
+	xrun -elaborate -snapshot my_design -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA"; \
+	xrun -64bit -R  $(GUI_FLAG) -snapshot my_design +UVM_TESTNAME=$(TESTCASE) -UVMLINEDEBUG -linedebug -access +rwc -uvm -logfile $(TESTCASE).log
+#	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA" +UVM_TESTNAME=$(TESTCASE) -logfile $(TESTCASE).log
+# -svseed 12345
+# irun -uvm  $$FILES  -64bit
+#	xrun -uvm -sv $$FILES -incdir $(UVM_SRC_PATH) $(UVM_SRC_PATH)/uvm_pkg.sv
 
 compile_xcelium_rtl:
 	FILE_TYPE=rtl; \

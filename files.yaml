@@ -22,8 +22,12 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_env.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_test.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/rand_coeff_test.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/const_coeff_test.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
 
+tests:
+  - rand_coeff_test
+  - const_coeff_test
 
 include_dirs:
   uvm: /tools/Cadence/installs/XCELIUM2403/tools.lnx86/methodology/UVM/CDNS-IEEE-ML/sv/src

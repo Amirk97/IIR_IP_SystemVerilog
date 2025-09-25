@@ -23,5 +23,8 @@ elif (sys.argv[2] == "tb"):
             print(files)
 elif (sys.argv[2] == "uvm_src_path"):
         print (config['include_dirs']['uvm'])
+elif (sys.argv[2] == "tests"):
+    for files in config['tests']:
+        print(files)
 
         
