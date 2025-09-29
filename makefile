@@ -42,9 +42,10 @@ regression:
 		make exec_docker TESTCASE=$$t; \
 		TESTLOG="$${TESTLOG} $${t}.log"
 	done; \
-	docker stop $(CONTAINER_NAME); \
 	echo $$TESTLOG; \
-	python3 log_parser.py $$TESTLOG
+	pwd; \
+	python3 log_parser.py $$TESTLOG; \
+	docker stop $(CONTAINER_NAME)
 
 create_container:
 	docker run --name $(CONTAINER_NAME) \

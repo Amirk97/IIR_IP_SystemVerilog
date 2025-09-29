@@ -14,7 +14,6 @@ line_cnt = 0
 for file in log_files:
     with open(file, "r", encoding="utf-8", errors="ignore") as f:
         lines = f.readlines()
-        print(f"number of lines are {len(lines)}")
         for line in lines:
             line_cnt +=1
             if "testname" in line.lower():

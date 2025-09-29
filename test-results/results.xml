@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <testsuite name="regression_suite" tests="2" failures="0" errors="0">
-  <testcase classname="regression" name="const_coeff_test" />
   <testcase classname="regression" name="rand_coeff_test" />
+  <testcase classname="regression" name="const_coeff_test" />
 </testsuite>
