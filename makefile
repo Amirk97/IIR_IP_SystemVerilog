@@ -40,10 +40,11 @@ regression:
 	TESTLOG=""; \
 	for t in $$TESTS;do \
 		make exec_docker TESTCASE=$$t; \
-		TESTLOG="$${TESTLOG} test-results/$${t}.log"; \
+		TESTLOG="$${TESTLOG} test-results/$${t}.log" ; \
 	done; \
 	echo $$TESTLOG; \
 	pwd; \
+	docker cp $(CONTAINER_NAME):/proj/test-results/. ./test-results/
 	python3 log_parser.py $$TESTLOG; \
 	docker stop $(CONTAINER_NAME)
 
