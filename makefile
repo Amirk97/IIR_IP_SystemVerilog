@@ -37,10 +37,14 @@ regression:
 	TESTS=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 	echo $$TESTS; \
 	docker start $(CONTAINER_NAME); \
+	TESTLOG=""; \
 	for t in $$TESTS;do \
 		make exec_docker TESTCASE=$$t; \
+		TESTLOG="$${TESTLOG} $${t}.log"
 	done; \
-	docker stop $(CONTAINER_NAME)
+	docker stop $(CONTAINER_NAME); \
+	echo $$TESTLOG; \
+	python3 log_parser.py $$TESTLOG
 
 create_container:
 	docker run --name $(CONTAINER_NAME) \
