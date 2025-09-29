@@ -40,7 +40,7 @@ regression:
 	TESTLOG=""; \
 	for t in $$TESTS;do \
 		make exec_docker TESTCASE=$$t; \
-		TESTLOG="$${TESTLOG} $${t}.log"
+		TESTLOG="$${TESTLOG} test-results/$${t}.log"; \
 	done; \
 	echo $$TESTLOG; \
 	pwd; \
@@ -74,7 +74,7 @@ compile_xcelium_tb:
 	echo $(GUI); \
 	echo $(TESTCASE); \
 	xrun -elaborate -snapshot my_design -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA"; \
-	xrun -64bit -R  $(GUI_FLAG) -snapshot my_design +UVM_TESTNAME=$(TESTCASE) -UVMLINEDEBUG -linedebug -access +rwc -uvm -logfile $(TESTCASE).log
+	xrun -64bit -R  $(GUI_FLAG) -snapshot my_design +UVM_TESTNAME=$(TESTCASE) -UVMLINEDEBUG -linedebug -access +rwc -uvm -logfile test-results/$(TESTCASE).log
 #	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA" +UVM_TESTNAME=$(TESTCASE) -logfile $(TESTCASE).log
 # -svseed 12345
 # irun -uvm  $$FILES  -64bit
