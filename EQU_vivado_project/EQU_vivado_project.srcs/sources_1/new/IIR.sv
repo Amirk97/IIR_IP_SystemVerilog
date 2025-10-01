@@ -34,7 +34,7 @@ module IIR
     localparam                                O_ACC_WIDTH = MULTIPLY_WIDTH + OUTPUT_TAPS - 1,
     localparam                                RES_ACC_WIDTH = (I_ACC_WIDTH>O_ACC_WIDTH) ? (I_ACC_WIDTH +2) : (O_ACC_WIDTH +2), // 2 also considering rounding error summation and summing acc_x and acc_y
     localparam logic signed [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRAC_WIDTH-1),
-    localparam logic [1:0]                    PROCESS_DELAY = 3)
+    localparam logic [1:0]                    PROCESS_DELAY = 2)
    (
     input logic [DATA_WIDTH-1:0]  x_i,
     output logic [DATA_WIDTH-1:0] y_o,
@@ -68,6 +68,12 @@ module IIR
    logic                           output_en;   
 
    logic [DATA_WIDTH-1:0]          y;   
+   logic [DATA_WIDTH-1:0]          y_tap;   
+
+   typedef enum bit [2:0] {IDLE, LOAD, PROCESS, STORE} state_t;
+   state_t  state;
+   state_t  next_state;
+   logic process_done;   
 
    // Data path
    genvar i;
@@ -119,7 +125,7 @@ module IIR
             else if (tap_en) begin
                coeff_y[i] <= coeff_y_i[i];            
                if (i == '0)
-                 output_tap [i] <= y;
+                 output_tap [i] <= y_tap;
                else
                  output_tap [i] <= output_tap[i-1];
             end
@@ -148,16 +154,18 @@ module IIR
       if (~rst_i) begin
          acc_x <= '0;
          acc_y <= '0;
-         y_o <= '0;      
+         y_tap <= '0;      
       end
       else begin
-         acc_x <= acc_x_comb;
-         acc_y <= acc_y_comb;
+         if(state == PROCESS) begin
+            acc_x <= acc_x_comb;
+            acc_y <= acc_y_comb;
+         end
          if (output_en)
-           y_o <= y;         
+           y_tap <= y;         
       end
    end  
-
+   assign y_o = y_tap ;
    
    // Rounding
    assign acc_res = acc_x - acc_y;   
@@ -176,11 +184,6 @@ module IIR
    end
 
    //Control part
-
-   typedef enum bit [2:0] {IDLE, LOAD, PROCESS, STORE} state_t;
-   state_t  state;
-   state_t  next_state;
-   logic process_done;   
 
    always_ff @(posedge clk_i or negedge rst_i) begin : FSM
       if (~rst_i) begin
@@ -219,9 +222,12 @@ module IIR
         end
 
         STORE: begin
-           next_state = IDLE;
            output_en = '1;
            data_DONE = '1;      
+           if (data_READY == '1)
+             next_state = LOAD;
+           else
+             next_state = IDLE; 
         end
 
         default:
@@ -237,11 +243,12 @@ module IIR
       end
       else if (state ==  PROCESS) begin
          counter += 1'b1;         
-      end
+      end else
+        counter = '0;      
    end  : counter_reg
 
    always_comb begin
-      if (counter == PROCESS_DELAY - 1'b1) begin
+      if (counter == PROCESS_DELAY-1) begin
          process_done = '1;         
       end 
       else

@@ -39,12 +39,10 @@ regression:
 	docker start $(CONTAINER_NAME); \
 	TESTLOG=""; \
 	for t in $$TESTS;do \
-		make exec_docker TESTCASE=$$t; \
+		$(MAKE) exec_docker TESTCASE=$$t; \
 		TESTLOG="$${TESTLOG} test-results/$${t}.log" ; \
 	done; \
-	echo $$TESTLOG; \
-	pwd; \
-	docker cp $(CONTAINER_NAME):/proj/test-results/. ./test-results/
+	docker cp $(CONTAINER_NAME):/proj/test-results/. ./test-results/; \
 	python3 log_parser.py $$TESTLOG; \
 	docker stop $(CONTAINER_NAME)
 
@@ -62,7 +60,7 @@ exec_docker:
 
 run_container:
 	docker start $(CONTAINER_NAME)
-	docker exec  $(CONTAINER_NAME) bash -c "export DISPLAY=:0 && cd /proj && source /tools/Cadence/installs/XCELIUM2403/setup_xcelium.sh && make compile_xcelium_tb GUI=$(GUI) TESTCASE=$(TESTCASE)"
+	$(MAKE) exec_docker
 	docker stop $(CONTAINER_NAME)
 #	docker logs -f xc_env_cnt
 
@@ -74,9 +72,9 @@ compile_xcelium_tb:
 	echo $(GUI_FLAG); \
 	echo $(GUI); \
 	echo $(TESTCASE); \
-	xrun -elaborate -snapshot my_design -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA"; \
-	xrun -64bit -R  $(GUI_FLAG) -snapshot my_design +UVM_TESTNAME=$(TESTCASE) -UVMLINEDEBUG -linedebug -access +rwc -uvm -logfile test-results/$(TESTCASE).log
-#	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA" +UVM_TESTNAME=$(TESTCASE) -logfile $(TESTCASE).log
+	xrun -access +rwc -elaborate -snapshot my_design -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA"; \
+	xrun -64bit -R  $(GUI_FLAG) -snapshot my_design +UVM_TESTNAME=$(TESTCASE) -UVMLINEDEBUG -linedebug -access +rwc -uvm -logfile test-results/$(TESTCASE).log -svseed random
+#	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA" +UVM_TESTNAME=$(TESTCASE) -logfile $(	TESTCASE).log
 # -svseed 12345
 # irun -uvm  $$FILES  -64bit
 #	xrun -uvm -sv $$FILES -incdir $(UVM_SRC_PATH) $(UVM_SRC_PATH)/uvm_pkg.sv

@@ -43,5 +43,9 @@ indent(testsuite)
 
 xml_path = os.path.join('test-results', 'results.xml')
 
+
+xml_str = tostring(testsuite, encoding='utf-8', method='xml')
+print(xml_str.decode('utf-8'))
+
 tree = ElementTree(testsuite)
 tree.write(xml_path, encoding="utf-8", xml_declaration =True)
