@@ -41,11 +41,12 @@ module top_tb_IIR;
              .y_o(IIR_if_inst.dut.y_o),
              .coeff_x_i(IIR_if_inst.dut.coeff_x_i),
              .coeff_y_i(IIR_if_inst.dut.coeff_y_i),
-             .data_READY(IIR_if_inst.dut.data_READY),
-             .data_DONE(IIR_if_inst.dut.data_DONE),
+             .valid_i(IIR_if_inst.dut.valid_i),
+             .ready_and_o(IIR_if_inst.dut.ready_and_o),
+             .valid_o(IIR_if_inst.dut.valid_o),
+             .ready_and_i(IIR_if_inst.dut.ready_and_i),
              .clk_i(IIR_if_inst.dut.clk_i),
-             .rst_i(IIR_if_inst.dut.rst_i)
-             );
+             .rst_i(IIR_if_inst.dut.rst_i));
 
    
    IIR_if #(

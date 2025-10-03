@@ -55,7 +55,8 @@ class my_test extends uvm_test;
    virtual task shutdown_phase(uvm_phase phase);
       super.shutdown_phase(phase);
       phase.raise_objection(this);  // Prevent phase from finishing
-      repeat(2) @(posedge my_if.clk_i); // wait until last item is compared
+      @(posedge my_if.ready_and_o);      
+      @(negedge my_if.clk_i); // wait until last item is compared
       phase.drop_objection(this);   // Let phase finish
    endtask
 

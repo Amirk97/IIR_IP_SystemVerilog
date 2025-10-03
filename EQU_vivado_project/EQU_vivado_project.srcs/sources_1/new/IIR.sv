@@ -34,7 +34,7 @@ module IIR
     localparam                                O_ACC_WIDTH = MULTIPLY_WIDTH + OUTPUT_TAPS - 1,
     localparam                                RES_ACC_WIDTH = (I_ACC_WIDTH>O_ACC_WIDTH) ? (I_ACC_WIDTH +2) : (O_ACC_WIDTH +2), // 2 also considering rounding error summation and summing acc_x and acc_y
     localparam logic signed [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRAC_WIDTH-1),
-    localparam logic [1:0]                    PROCESS_DELAY = 2)
+    localparam logic [1:0]                    PROCESS_DELAY = 2) // This depends on the number of pipeline stages is equal to 1 + PIPELINE_STAGE
    (
     input logic [DATA_WIDTH-1:0]  x_i,
     output logic [DATA_WIDTH-1:0] y_o,
@@ -42,8 +42,11 @@ module IIR
     input logic [COEFF_WIDTH-1:0] coeff_x_i [0:INPUT_TAPS-1], 
     input logic [COEFF_WIDTH-1:0] coeff_y_i [0:OUTPUT_TAPS-1], 
    
-    input logic                   data_READY,
-    output logic                  data_DONE,
+    input logic                   valid_i,
+    output logic                  ready_and_o,
+
+    output logic                  valid_o,
+    input logic                   ready_and_i,
 
     input logic                   clk_i,
     input logic                   rst_i);
@@ -70,7 +73,7 @@ module IIR
    logic [DATA_WIDTH-1:0]          y;   
    logic [DATA_WIDTH-1:0]          y_tap;   
 
-   typedef enum bit [2:0] {IDLE, LOAD, PROCESS, STORE} state_t;
+   typedef enum bit [2:0] {IDLE, PROCESS, STORE} state_t;
    state_t  state;
    state_t  next_state;
    logic process_done;   
@@ -187,10 +190,10 @@ module IIR
 
    always_ff @(posedge clk_i or negedge rst_i) begin : FSM
       if (~rst_i) begin
-         state = IDLE;         
+         state <= IDLE;
       end
       else begin
-         state = next_state;         
+         state <= next_state;         
       end
    end  : FSM
 
@@ -198,24 +201,20 @@ module IIR
       // Default assignments so not get latches
       tap_en = '0;
       output_en = '0;      
-      data_DONE = '0;      
 
       case(state)
 
         IDLE: begin
-           if (data_READY == '1)
-             next_state = LOAD;
+           if (valid_i == '1) begin
+              next_state = PROCESS; // A mealy state for maximum speed hanshake between valid/ready
+              tap_en = '1;
+           end
            else
              next_state = IDLE;             
         end
-
-        LOAD: begin
-           next_state = PROCESS;
-           tap_en = '1;
-        end
-
+        
         PROCESS: begin
-           if (process_done == '1)
+           if (process_done == 1'b1 && valid_o == 1'b0) // If there's an output traffic on the output it will stall the IP here
              next_state = STORE;
            else
              next_state = PROCESS;             
@@ -223,18 +222,33 @@ module IIR
 
         STORE: begin
            output_en = '1;
-           data_DONE = '1;      
-           if (data_READY == '1)
-             next_state = LOAD;
-           else
-             next_state = IDLE; 
-        end
-
+           next_state = IDLE; 
+           end
+      
         default:
           next_state = IDLE;
       endcase
    end // always_comb
 
+   always_ff @(posedge clk_i or negedge rst_i) begin : VALID_O
+      if (~rst_i) begin
+         valid_o <= 1'b0;
+         ready_and_o <= 1'b1;         
+      end
+      else begin
+         if (valid_o & ready_and_i)
+           valid_o <= 1'b0;
+         else if ((state == STORE))
+           valid_o <= 1'b1;
+
+         if (next_state != IDLE) begin 
+            ready_and_o <= '0;    
+         end else begin
+            ready_and_o <= '1;              
+         end
+      end
+   end // VALID_O
+   
    logic [$bits(PROCESS_DELAY)-1:0] counter;
    
    always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
@@ -248,11 +262,15 @@ module IIR
    end  : counter_reg
 
    always_comb begin
-      if (counter == PROCESS_DELAY-1) begin
-         process_done = '1;         
-      end 
-      else
-        process_done = '0;
+      if (PROCESS_DELAY-2 <= 0)
+        process_done = '1;
+      else begin
+         if (counter == PROCESS_DELAY-2) begin
+            process_done = '1;         
+         end 
+         else
+           process_done = '0;
+      end
    end
 
 endmodule
