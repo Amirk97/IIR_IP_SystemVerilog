@@ -61,10 +61,21 @@ module top_tb_IIR;
                 .clk_i(clk),
                 .rst_i(rst));
 
+   bind IIR IIR_sva IIR_sva_inst (
+                                        .valid_i(IIR_if_inst.valid_i),
+                                        .ready_and_o(IIR_if_inst.ready_and_o),
+
+                                        .valid_o(IIR_if_inst.valid_o),
+                                        .ready_and_i(IIR_if_inst.ready_and_i),
+
+                                        .clk_i(IIR_if_inst.clk_i),
+                                        .rst_i(IIR_if_inst.rst_i));
+   
    initial begin
       uvm_config_db#(virtual IIR_if)::set(null, "*", "if", IIR_if_inst);
       run_test("my_test");
    end
+   
 
    initial begin
       rst <= 1'b0;

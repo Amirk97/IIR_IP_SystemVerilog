@@ -230,7 +230,7 @@ module IIR
       endcase
    end // always_comb
 
-   always_ff @(posedge clk_i or negedge rst_i) begin : VALID_O
+   always_ff @(posedge clk_i or negedge rst_i) begin : VALID_O_READY_O
       if (~rst_i) begin
          valid_o <= 1'b0;
          ready_and_o <= 1'b1;         
@@ -247,7 +247,7 @@ module IIR
             ready_and_o <= '1;              
          end
       end
-   end // VALID_O
+   end // block: VALID_O_READY_O
    
    logic [$bits(PROCESS_DELAY)-1:0] counter;
    
