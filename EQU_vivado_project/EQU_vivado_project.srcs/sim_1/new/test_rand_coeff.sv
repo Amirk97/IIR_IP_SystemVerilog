@@ -1,8 +1,8 @@
-class rand_coeff_test extends my_test;
+class test_rand_coeff extends my_test;
 
-   `uvm_component_utils(rand_coeff_test)
+   `uvm_component_utils(test_rand_coeff)
 
-   function new(string name = "rand_coeff_test", uvm_component parent = null);
+   function new(string name = "test_rand_coeff", uvm_component parent = null);
       super.new(name, parent);
    endfunction // new
 

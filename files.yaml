@@ -16,19 +16,22 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequence.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequencer.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_driver.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/driver_backpress.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_monitor.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_agent.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_scoreboard.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_env.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_test.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/rand_coeff_test.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/const_coeff_test.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_rand_coeff.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_const_coeff.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_rand_coeff_backpress.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_sva.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
 
 tests:
-  - rand_coeff_test
-  - const_coeff_test
+  - test_const_coeff
+  - test_rand_coeff
+  - test_rand_coeff_backpress
 
 include_dirs:
   uvm: /tools/Cadence/installs/XCELIUM2403/tools.lnx86/methodology/UVM/CDNS-IEEE-ML/sv/src

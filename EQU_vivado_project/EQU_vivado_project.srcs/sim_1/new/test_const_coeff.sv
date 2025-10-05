@@ -1,8 +1,8 @@
-class const_coeff_test extends my_test;
+class test_const_coeff extends my_test;
 
-   `uvm_component_utils(const_coeff_test)
+   `uvm_component_utils(test_const_coeff)
 
-   function new(string name = "const_coeff_test", uvm_component parent = null);
+   function new(string name = "test_const_coeff", uvm_component parent = null);
       super.new(name, parent);
    endfunction // new
 

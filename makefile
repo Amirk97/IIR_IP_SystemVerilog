@@ -23,7 +23,7 @@ else
 GUI_FLAG =
 endif
 
-TESTCASE ?= const_coeff_test
+TESTCASE ?= test_const_coeff
 
 #compile_C_files:
 #	gcc -Wall -Wextra -o model
