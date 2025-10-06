@@ -4,7 +4,6 @@ class driver_backpress extends my_driver;
 
    `uvm_component_utils(driver_backpress)
 
-//   virtual IIR_if my_if;   
    bit     rand_ready;
    
    function new (string name, uvm_component parent);

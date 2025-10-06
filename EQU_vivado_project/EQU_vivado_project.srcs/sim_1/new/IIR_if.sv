@@ -12,8 +12,8 @@ interface IIR_if # (
    logic [DATA_WIDTH-1:0]  x_i;
    logic [DATA_WIDTH-1:0]  y_o;
 
-   logic [COEFF_WIDTH-1:0] coeff_x_i [0:INPUT_TAPS-1]; 
-   logic [COEFF_WIDTH-1:0] coeff_y_i [0:OUTPUT_TAPS-1]; 
+   logic signed [COEFF_WIDTH-1:0] coeff_x_i [0:INPUT_TAPS-1]; 
+   logic signed [COEFF_WIDTH-1:0] coeff_y_i [0:OUTPUT_TAPS-1]; 
 
    logic                   valid_i;
    logic                   ready_and_o;

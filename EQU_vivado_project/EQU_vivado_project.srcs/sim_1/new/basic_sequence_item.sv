@@ -17,13 +17,14 @@ import "DPI-C" function void dpi_get_coeff (int idx, output real arr[],  output 
                                parameter DATA_WIDTH = config_pkg::DATA_WIDTH,
                                parameter COEFF_WIDTH = config_pkg::COEFF_WIDTH,
                                parameter DATA_FRAC_WIDTH = config_pkg::DATA_FRAC_WIDTH, 
-                               parameter COEFF_FRAC_WIDTH = config_pkg::COEFF_FRAC_WIDTH
+                               parameter COEFF_FRAC_WIDTH = config_pkg::COEFF_FRAC_WIDTH,
+                               localparam logic unsigned [COEFF_FRAC_WIDTH:0] FXD_POINT_COEFF = 1 << COEFF_FRAC_WIDTH
                                )
       extends uvm_sequence_item;
 
       `uvm_object_utils(basic_sequence_item)
 
-      typedef logic [COEFF_WIDTH-1:0]   coeff_t;
+      typedef logic signed [COEFF_WIDTH-1:0]   coeff_t;
       
       rand logic signed [DATA_WIDTH-1:0] x_i;
 
@@ -53,7 +54,7 @@ import "DPI-C" function void dpi_get_coeff (int idx, output real arr[],  output 
          dpi_get_coeff(coeff_index, coeff_double.input_coeff, coeff_double.output_coeff);
 
          for(int i=0; i< INPUT_TAPS; i++) begin 
-            coeff_x_i[i] =  coeff_t'(coeff_double.input_coeff[i] * `FXD_POINT_COEFF);
+            coeff_x_i[i] =  coeff_t'(coeff_double.input_coeff[i] * FXD_POINT_COEFF);
             `uvm_info("ITEM",
                       $sformatf("Recieved Input_coeff[%d]: %f", i, coeff_double.input_coeff[i]),
                       UVM_MEDIUM)
@@ -61,7 +62,7 @@ import "DPI-C" function void dpi_get_coeff (int idx, output real arr[],  output 
          end
 
          for(int i=0; i< OUTPUT_TAPS; i++) begin
-            coeff_y_i[i] =  coeff_t'(coeff_double.output_coeff[i] * `FXD_POINT_COEFF);
+            coeff_y_i[i] =  coeff_t'(coeff_double.output_coeff[i] * FXD_POINT_COEFF);
          end
 
       endfunction
