@@ -18,18 +18,12 @@ void dpi_init_filter(void){
   init_filter(&IIR_filter);
 }
 
-int dpi_compute_filter_output(int input) {
-  printf("Recieved input in C world is %d\n", input);
+int dpi_compute_filter_output(int input, int index) {
+  printf("Recieved input in C world is %d and index is %d\n", input, index);
   fflush(stdout);
-  int output = compute_filter_output(&IIR_filter, input, coeff[read_index].input_coeff, coeff[read_index].output_coeff);
+  int output = compute_filter_output(&IIR_filter, input, BASS_coeffs[index].input_coeff, BASS_coeffs[index].output_coeff);
   printf("In dpi wrapper, output is %d\n", output);
   fflush(stdout);
-
-  read_index++;
-  if(read_index == ARRAY_SIZE) {
-    read_index=0;
-  }
-
   return output;
 }
 
@@ -56,7 +50,7 @@ void dpi_get_coeff (int array_index, svOpenArrayHandle arr1[], svOpenArrayHandle
   memcpy(arr_ptr2, coeff[write_index].output_coeff, sizeof(coeff->output_coeff));
 
   write_index++;
-    if(write_index == ARRAY_SIZE) {
+  if(write_index == ARRAY_SIZE) {
     write_index=0;
   }
 

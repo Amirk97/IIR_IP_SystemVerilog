@@ -1,4 +1,4 @@
-class test_rand_coeff_backpress extends test_rand_coeff;
+class test_rand_coeff_backpress extends my_test;
 
    `uvm_component_utils(test_rand_coeff_backpress)
 
@@ -8,6 +8,8 @@ class test_rand_coeff_backpress extends test_rand_coeff;
 
    virtual function void build_phase(uvm_phase phase);
       super.build_phase(phase);
+
+      factory.set_type_override_by_type(basic_sequence_item#()::get_type(), rand_coeff_item::get_type());
 
       factory.set_type_override_by_type(my_driver::get_type(), driver_backpress::get_type());
 

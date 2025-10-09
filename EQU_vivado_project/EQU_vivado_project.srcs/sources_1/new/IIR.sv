@@ -205,7 +205,7 @@ module IIR
       case(state)
 
         IDLE: begin
-           if (valid_i == '1) begin
+           if (valid_i == '1 && ready_and_o == '1) begin
               next_state = PROCESS; // A mealy state for maximum speed hanshake between valid/ready
               tap_en = '1;
            end
@@ -233,7 +233,7 @@ module IIR
    always_ff @(posedge clk_i or negedge rst_i) begin : VALID_O_READY_O
       if (~rst_i) begin
          valid_o <= 1'b0;
-         ready_and_o <= 1'b1;         
+         ready_and_o <= 1'b0;         
       end
       else begin
          if (valid_o & ready_and_i)
@@ -241,10 +241,10 @@ module IIR
          else if ((state == STORE))
            valid_o <= 1'b1;
 
-         if (next_state != IDLE) begin 
-            ready_and_o <= '0;    
+         if (next_state == (IDLE) || ((next_state != PROCESS) && (state == (IDLE)))) begin 
+            ready_and_o <= '1;
          end else begin
-            ready_and_o <= '1;              
+            ready_and_o <= '0;    
          end
       end
    end // block: VALID_O_READY_O

@@ -1,6 +1,6 @@
 #include "functions.h"
 
-coeff_struct const BASS_coeffs [25] = {
+coeff_struct BASS_coeffs [25] = {
 		[0].input_coeff = {1.0, -1.8836532429909993, 0.8900591334898765},
 		[0].output_coeff = {-1.8836532429909993, 0.8900591334898765},
 

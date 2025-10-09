@@ -1,5 +1,5 @@
-import "DPI-C" function void dpi_init_filter();
-import "DPI-C" function int dpi_compute_filter_output(input int val);
+//import "DPI-C" function void dpi_init_filter();
+import "DPI-C" function int dpi_compute_filter_output(input int val, input int index);
 `define DIFF_MARG 0
 
 class my_scoreboard extends uvm_component;
@@ -27,10 +27,10 @@ class my_scoreboard extends uvm_component;
 
    virtual function void write(basic_sequence_item#() item);
       `uvm_info("SCOREBOARD",
-                $sformatf("Recieved input: %d", $signed(item.x_i)),
+                $sformatf("Recieved input: %d and index %d", $signed(item.x_i), item.coeff_index),
                 UVM_MEDIUM)
 
-      expected_data =  dpi_compute_filter_output($signed(item.x_i));
+      expected_data =  dpi_compute_filter_output($signed(item.x_i), $signed(item.coeff_index));
       observed_data =  $signed(item.y_o);
 
       `uvm_info("SCOREBOARD",

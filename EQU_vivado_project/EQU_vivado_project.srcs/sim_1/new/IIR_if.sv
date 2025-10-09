@@ -4,14 +4,12 @@ interface IIR_if # (
                     parameter DATA_WIDTH = config_pkg::DATA_WIDTH,
                     parameter COEFF_WIDTH = config_pkg::COEFF_WIDTH,
                     parameter DATA_FRAC_WIDTH = config_pkg::DATA_FRAC_WIDTH, 
-                    parameter COEFF_FRAC_WIDTH = config_pkg::COEFF_FRAC_WIDTH)
-   (
-    input logic clk_i,
-    input logic rst_i);
+                    parameter COEFF_FRAC_WIDTH = config_pkg::COEFF_FRAC_WIDTH);
 
    logic [DATA_WIDTH-1:0]  x_i;
    logic [DATA_WIDTH-1:0]  y_o;
 
+   int coeff_index;   
    logic signed [COEFF_WIDTH-1:0] coeff_x_i [0:INPUT_TAPS-1]; 
    logic signed [COEFF_WIDTH-1:0] coeff_y_i [0:OUTPUT_TAPS-1]; 
 
@@ -20,6 +18,9 @@ interface IIR_if # (
 
    logic                   valid_o;   
    logic                   ready_and_i;
+
+   logic                   clk_i;   
+   logic                   rst_i;
    
    modport tb (
                output x_i,
@@ -34,8 +35,8 @@ interface IIR_if # (
                input  valid_o,
                output ready_and_i,
 
-               input  clk_i,
-               input  rst_i
+               output  clk_i,
+               output  rst_i
                );
 
    modport dut (

@@ -34,8 +34,8 @@ import "DPI-C" function void dpi_get_coeff (int idx, output real arr[],  output 
       coeff_struct coeff_double;
       
       rand int coeff_index = 0;
-      int prev_coeff_index = 0;
-      rand bit      enable_change;
+      int      prev_coeff_index = 0; //Used in child classes for randomizing the coeff_index
+      rand bit enable_change;
 
       logic [DATA_WIDTH-1:0]          y_o;      
 
@@ -46,7 +46,7 @@ import "DPI-C" function void dpi_get_coeff (int idx, output real arr[],  output 
       function void post_randomize();
 
          prev_coeff_index = coeff_index;
-         
+
          `uvm_info("ITEM",
                    $sformatf("Recieved Coeff_index: %d", coeff_index),
                    UVM_MEDIUM)

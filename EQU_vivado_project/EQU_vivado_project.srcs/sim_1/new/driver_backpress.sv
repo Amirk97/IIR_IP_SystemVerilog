@@ -24,6 +24,7 @@ class driver_backpress extends my_driver;
                my_if.valid_i <= '1;
                my_if.coeff_x_i <= item.coeff_x_i;
                my_if.coeff_y_i <= item.coeff_y_i;
+               my_if.coeff_index <= item.coeff_index;
                wait(my_if.ready_and_o == 1'b1);
                wait(my_if.ready_and_o == 1'b0);
                my_if.valid_i <= '0;        
@@ -38,7 +39,7 @@ class driver_backpress extends my_driver;
             forever begin
                @(posedge my_if.clk_i)
                  assert(std::randomize(rand_ready) with {rand_ready dist {0 := 80, 1 := 20}; });               
-               my_if.ready_and_i = rand_ready;         
+               my_if.ready_and_i <= rand_ready;         
             end // forever begin
          end // block: drive_DUT_output
          

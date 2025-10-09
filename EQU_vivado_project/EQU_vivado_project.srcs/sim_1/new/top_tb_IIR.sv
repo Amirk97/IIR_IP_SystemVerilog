@@ -23,10 +23,7 @@ import config_pkg::*;
 
 module top_tb_IIR;
 
-   logic clk, rst;
-
-   initial clk = '0;   
-   always #5 clk = ~clk;      
+//   logic clk, rst;
 
    IIR #(
          .INPUT_TAPS  (config_pkg::INPUT_TAPS),
@@ -57,30 +54,28 @@ module top_tb_IIR;
             .DATA_FRAC_WIDTH (config_pkg::DATA_FRAC_WIDTH), 
             .COEFF_FRAC_WIDTH (config_pkg::COEFF_FRAC_WIDTH)
             )
-   IIR_if_inst (
-                .clk_i(clk),
-                .rst_i(rst));
+   IIR_if_inst();
 
    bind IIR IIR_sva IIR_sva_inst (
                                         .valid_i(IIR_if_inst.valid_i),
                                         .ready_and_o(IIR_if_inst.ready_and_o),
-
                                         .valid_o(IIR_if_inst.valid_o),
                                         .ready_and_i(IIR_if_inst.ready_and_i),
-
                                         .clk_i(IIR_if_inst.clk_i),
                                         .rst_i(IIR_if_inst.rst_i));
-   
+
+   initial IIR_if_inst.clk_i = '0;
+   always #5 IIR_if_inst.clk_i = ~IIR_if_inst.clk_i;      
+
    initial begin
       uvm_config_db#(virtual IIR_if)::set(null, "*", "if", IIR_if_inst);
       run_test("my_test");
-   end
-   
+   end   
 
    initial begin
-      rst <= 1'b0;
-      repeat(2) @(posedge clk);
-      rst <= 1'b1;
+      IIR_if_inst.rst_i <= 1'b0;
+      repeat(2) @(posedge IIR_if_inst.clk_i);
+      IIR_if_inst.rst_i <= 1'b1;
       `uvm_info("RSTDRV","Reset was released here!", UVM_MEDIUM);    
    end
 

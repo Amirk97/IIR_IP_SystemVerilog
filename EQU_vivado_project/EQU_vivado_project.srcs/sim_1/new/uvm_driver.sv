@@ -23,9 +23,10 @@ class my_driver extends uvm_driver#(basic_sequence_item#());
          my_if.valid_i <= '1;
          my_if.coeff_x_i <= item.coeff_x_i;
          my_if.coeff_y_i <= item.coeff_y_i;
+         my_if.coeff_index <= item.coeff_index;
          wait(my_if.ready_and_o == 1'b1);
          wait(my_if.ready_and_o == 1'b0);
-         my_if.valid_i <= '0;        
+         my_if.valid_i = '0;
          seq_item_port.item_done();
          `uvm_info("DRIVER",
                    "Drove item",
