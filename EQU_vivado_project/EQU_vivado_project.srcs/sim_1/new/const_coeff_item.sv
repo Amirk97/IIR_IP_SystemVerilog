@@ -8,7 +8,7 @@ class const_coeff_item extends basic_sequence_item#();
       coeff_index == 0;
    }
 
-   function new (string name = "basic_sequence_item");
+   function new (string name = "const_coeff_item");
       super.new(name);
    endfunction
 

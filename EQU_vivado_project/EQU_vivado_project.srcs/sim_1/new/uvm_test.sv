@@ -8,6 +8,7 @@ class my_test extends uvm_test;
    my_env env;
    my_sequence seq;
    virtual IIR_if my_if;
+   int     NUMBER_OF_TESTS = 100;
 
    //Constructor
    function new(string name = "my_test", uvm_component parent = null);
@@ -20,6 +21,7 @@ class my_test extends uvm_test;
       env = my_env::type_id::create("env" , this);
       seq = my_sequence::type_id::create("seq", this);
 
+      uvm_config_db#(int)::set(null, "*", "NUMBER_OF_TESTS", NUMBER_OF_TESTS);
       if(!uvm_config_db#(virtual IIR_if)::get(this, "", "if", my_if)) begin
          `uvm_fatal("NOVIF",{"Virtual interface must be set for: ", get_full_name()})
       end

@@ -13,7 +13,7 @@ class rand_coeff_item extends basic_sequence_item#();
       else coeff_index inside {[0:24]};
    }
 
-   function new (string name = "basic_sequence_item");
+   function new (string name = "rand_coeff_item");
       super.new(name);
    endfunction
 
