@@ -13,6 +13,7 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_if.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/const_coeff_item.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/rand_coeff_item.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/item_saturation.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequence.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequencer.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_driver.sv
@@ -27,6 +28,7 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_const_coeff.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_rand_coeff_backpress.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_rand_coeff_backpress_mid_reset.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_saturation.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_sva.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
 
@@ -35,6 +37,7 @@ tests:
   - test_rand_coeff
   - test_rand_coeff_backpress
   - test_rand_coeff_backpress_mid_reset
+  - test_saturation
 
 include_dirs:
   uvm: /tools/Cadence/installs/XCELIUM2403/tools.lnx86/methodology/UVM/CDNS-IEEE-ML/sv/src
