@@ -28,13 +28,13 @@ module IIR
     parameter                                 COEFF_WIDTH = 18,
     parameter                                 DATA_FRAC_WIDTH = 0,
     parameter                                 COEFF_FRAC_WIDTH = 15,
+    parameter                                 PROCESS_DELAY = 2, // This depends on the number of pipeline stages is equal to 1 + PIPELINE_STAGE
     localparam                                FRAC_WIDTH = DATA_FRAC_WIDTH + COEFF_FRAC_WIDTH,
     localparam                                MULTIPLY_WIDTH = DATA_WIDTH + COEFF_WIDTH - 1,
     localparam                                I_ACC_WIDTH = MULTIPLY_WIDTH + INPUT_TAPS - 1,
     localparam                                O_ACC_WIDTH = MULTIPLY_WIDTH + OUTPUT_TAPS - 1,
     localparam                                RES_ACC_WIDTH = (I_ACC_WIDTH>O_ACC_WIDTH) ? (I_ACC_WIDTH +2) : (O_ACC_WIDTH +2), // 2 also considering rounding error summation and summing acc_x and acc_y
-    localparam logic signed [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRAC_WIDTH-1),
-    localparam logic [1:0]                    PROCESS_DELAY = 2) // This depends on the number of pipeline stages is equal to 1 + PIPELINE_STAGE
+    localparam logic signed [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRAC_WIDTH-1))
    (
     input logic [DATA_WIDTH-1:0]  x_i,
     output logic [DATA_WIDTH-1:0] y_o,
@@ -249,7 +249,7 @@ module IIR
       end
    end // block: VALID_O_READY_O
    
-   logic [$bits(PROCESS_DELAY)-1:0] counter;
+   logic [$clog2(PROCESS_DELAY):0] counter;
    
    always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
       if (~rst_i) begin

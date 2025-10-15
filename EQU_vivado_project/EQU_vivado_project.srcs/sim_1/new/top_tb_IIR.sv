@@ -31,7 +31,8 @@ module top_tb_IIR;
          .DATA_WIDTH  (config_pkg::DATA_WIDTH),
          .COEFF_WIDTH (config_pkg::COEFF_WIDTH),
          .DATA_FRAC_WIDTH (config_pkg::DATA_FRAC_WIDTH), 
-         .COEFF_FRAC_WIDTH (config_pkg::COEFF_FRAC_WIDTH)
+         .COEFF_FRAC_WIDTH (config_pkg::COEFF_FRAC_WIDTH),
+         .PROCESS_DELAY(config_pkg::PROCESS_DELAY)
          )
    IIR_inst (
              .x_i(IIR_if_inst.dut.x_i),
@@ -52,17 +53,20 @@ module top_tb_IIR;
             .DATA_WIDTH  (config_pkg::DATA_WIDTH),
             .COEFF_WIDTH (config_pkg::COEFF_WIDTH),
             .DATA_FRAC_WIDTH (config_pkg::DATA_FRAC_WIDTH), 
-            .COEFF_FRAC_WIDTH (config_pkg::COEFF_FRAC_WIDTH)
+            .COEFF_FRAC_WIDTH (config_pkg::COEFF_FRAC_WIDTH),
+            .PROCESS_DELAY(config_pkg::PROCESS_DELAY)
             )
    IIR_if_inst();
 
-   bind IIR IIR_sva IIR_sva_inst (
-                                        .valid_i(IIR_if_inst.valid_i),
-                                        .ready_and_o(IIR_if_inst.ready_and_o),
-                                        .valid_o(IIR_if_inst.valid_o),
-                                        .ready_and_i(IIR_if_inst.ready_and_i),
-                                        .clk_i(IIR_if_inst.clk_i),
-                                        .rst_i(IIR_if_inst.rst_i));
+   bind IIR IIR_sva #(
+                      .PROCESS_DELAY(config_pkg::PROCESS_DELAY))
+   IIR_sva_inst(
+                .valid_i(IIR_if_inst.valid_i),
+                .ready_and_o(IIR_if_inst.ready_and_o),
+                .valid_o(IIR_if_inst.valid_o),
+                .ready_and_i(IIR_if_inst.ready_and_i),
+                .clk_i(IIR_if_inst.clk_i),
+                .rst_i(IIR_if_inst.rst_i));
 
    initial IIR_if_inst.clk_i = '0;
    always #5 IIR_if_inst.clk_i = ~IIR_if_inst.clk_i;      

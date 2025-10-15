@@ -4,7 +4,8 @@ interface IIR_if # (
                     parameter DATA_WIDTH = config_pkg::DATA_WIDTH,
                     parameter COEFF_WIDTH = config_pkg::COEFF_WIDTH,
                     parameter DATA_FRAC_WIDTH = config_pkg::DATA_FRAC_WIDTH, 
-                    parameter COEFF_FRAC_WIDTH = config_pkg::COEFF_FRAC_WIDTH);
+                    parameter COEFF_FRAC_WIDTH = config_pkg::COEFF_FRAC_WIDTH,
+                    parameter PROCESS_DELAY = config_pkg::PROCESS_DELAY);
 
    logic [DATA_WIDTH-1:0]  x_i;
    logic [DATA_WIDTH-1:0]  y_o;

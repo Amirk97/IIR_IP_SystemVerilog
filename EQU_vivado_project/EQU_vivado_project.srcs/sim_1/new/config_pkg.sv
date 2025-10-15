@@ -6,5 +6,6 @@ package config_pkg;
    localparam COEFF_FRAC_WIDTH = 31;
    localparam COEFF_WIDTH = COEFF_FRAC_WIDTH + 3;
    localparam DATA_FRAC_WIDTH = 0;   
+   localparam PROCESS_DELAY = 3;
    
 endpackage
