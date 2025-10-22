@@ -19,14 +19,28 @@ GUI ?= 0
 
 ifeq ($(GUI),1)
 GUI_FLAG = -gui
+EXTRA_ARGS += --trace --trace-fst --trace-structs
 else
 GUI_FLAG =
 endif
 
+TOPLEVEL_LANG = verilog
+VERILOG_SOURCES = $(shell pwd)/dut.sv
+TOPLEVEL = dut
+COCOTB_TEST_MODULES = test_dut
+SIM = verilator
+COCO_TRGT ?= all
+export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI
+
 TESTCASE ?= test_const_coeff
 
-#compile_C_files:
-#	gcc -Wall -Wextra -o model
+cocotb:
+	. ~/venvs/pyuvm/bin/activate && \
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim $(COCO_TRGT); \
+	deactivate
+
+gtkwave: cocotb
+	gtkwave dump.fst 
 
 project:
 	@echo "Building project: $(proj)"
@@ -93,3 +107,4 @@ clean:
 list:
 	@echo "Available projects:"
 	@ls scripts/*.tcl | sed 's/scripts\///;s/.tcl//'
+
