@@ -109,13 +109,16 @@ module IIR
                             .y(multi_prod_x[i]));
       end : input_taps
    endgenerate
-
+   
+   // Turning off the verilator lint cause it's in a loop
+   /* verilator lint_off WIDTHEXPAND */
    always_comb begin
       acc_x_comb = '0;   
       for (int i=0; i<INPUT_TAPS; i++) begin
          acc_x_comb += multi_prod_x[i];
       end
    end
+   /* verilator lint_on WIDTHEXPAND */
 
    generate
 
@@ -171,7 +174,10 @@ module IIR
    assign y_o = y_tap ;
    
    // Rounding
-   assign acc_res = acc_x - acc_y;   
+   // Turning off the verilator lint cause acc_res size is also considering the summation with rounding
+   /* verilator lint_off WIDTHEXPAND */
+   assign acc_res = acc_x - acc_y;
+   /* verilator lint_on WIDTHEXPAND */
    assign acc_res_rounded = acc_res + ROUNDING_ERROR;  // Also summation for negative numbers since later on slicing gonna round downwards
 
    // Check for OF and UF assuming 24bits of data  
@@ -249,7 +255,8 @@ module IIR
       end
    end // block: VALID_O_READY_O
    
-   logic [$clog2(PROCESS_DELAY):0] counter;
+   typedef logic unsigned [$clog2(PROCESS_DELAY):0] counter_t;   
+   counter_t counter;
    
    always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
       if (~rst_i) begin
@@ -265,7 +272,7 @@ module IIR
       if (PROCESS_DELAY-2 <= 0)
         process_done = '1;
       else begin
-         if (counter == PROCESS_DELAY-2) begin
+         if (counter == counter_t'(PROCESS_DELAY-2)) begin
             process_done = '1;         
          end 
          else
