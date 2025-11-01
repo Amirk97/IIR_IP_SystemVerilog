@@ -1,5 +1,7 @@
 .ONESHELL:
 
+C_FILES := $(shell python3 yaml_parser.py files.yaml "c")
+
 # Default project (override with 'make proj=design2')
 proj_name = 
 
@@ -36,12 +38,14 @@ export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS
 
 TESTCASE ?= test_const_coeff
 
-compile_c:
-	FILE_TYPE=c; \
-	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
-	gcc -shared -fPIC $$FILES -o ./Python_tb/libmylib.so
+compile_c: $(C_FILES)
+	echo $(C_FILES)
+	gcc -shared -fPIC $(C_FILES) -o ./Python_tb/libmylib.so &&
+	@touch $@
+#	FILE_TYPE=c; \
+#	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 
-cocotb:
+cocotb: compile_c
 	. ~/venvs/pyuvm/bin/activate && \
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim $(COCO_TRGT); \
 	deactivate
@@ -54,7 +58,7 @@ project:
 	@echo "Building project: $(proj)"
 	$(VIVADO) -mode batch -source $(MAKE_PROJECT_TCL)
 
-regression:
+regression_sv_uvm:
 	FILE_TYPE=tests; \
 	TESTS=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 	echo $$TESTS; \
@@ -67,6 +71,10 @@ regression:
 	docker cp $(CONTAINER_NAME):/proj/test-results/. ./test-results/; \
 	python3 log_parser.py $$TESTLOG; \
 	docker stop $(CONTAINER_NAME)
+
+regression_all:
+	$(MAKE) regression_sv_uvm
+	$(MAKE) cocotb GUI=1
 
 create_container:
 	docker run --name $(CONTAINER_NAME) \
@@ -110,7 +118,7 @@ compile_xcelium_rtl:
 
 clean:
 	@echo "Cleaning generated files..."
-	rm -rf *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil
+	rm -rf *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c
 
 list:
 	@echo "Available projects:"
