@@ -32,6 +32,11 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_sva.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
 
+  c:
+    - ./C_code_source_FPGA/IIR_filter.c
+    - ./C_code_source_FPGA/py_functions.c
+    - ./C_code_source_FPGA/functions.c
+
 tests:
   - test_const_coeff
   - test_rand_coeff

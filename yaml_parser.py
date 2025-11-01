@@ -17,12 +17,15 @@ if (sys.argv[2] == "rtl"):
     for rtl_file in config['files']['rtl']:
         print(rtl_file)
 elif (sys.argv[2] == "tb"):
-        for files in config['files']['rtl']:
-            print(files)
-        for files in config['files']['tb']:
-            print(files)
+    for files in config['files']['rtl']:
+        print(files)
+    for files in config['files']['tb']:
+        print(files)
+elif (sys.argv[2] == "c"):
+    for files in config['files']['c']:
+        print(files)
 elif (sys.argv[2] == "uvm_src_path"):
-        print (config['include_dirs']['uvm'])
+    print (config['include_dirs']['uvm'])
 elif (sys.argv[2] == "tests"):
     for files in config['tests']:
         print(files)

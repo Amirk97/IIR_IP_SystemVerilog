@@ -24,22 +24,30 @@ else
 GUI_FLAG =
 endif
 
+EXTRA_ARGS += $(shell python3 ./Python_tb/cfg_pkg.py)
+PYTHONPATH = $(shell pwd)/Python_tb/
 TOPLEVEL_LANG = verilog
-VERILOG_SOURCES = $(shell pwd)/dut.sv
-TOPLEVEL = dut
-COCOTB_TEST_MODULES = test_dut
+VERILOG_SOURCES = $(shell pwd)/EQU_vivado_project/EQU_vivado_project.srcs/sources_1/new/*.sv
+TOPLEVEL = IIR
+COCOTB_TEST_MODULES = top_tb_IIR
 SIM = verilator
 COCO_TRGT ?= all
-export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI
+export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI PYTHONPATH VERILATOR_COMPILE_ARGS
 
 TESTCASE ?= test_const_coeff
+
+compile_c:
+	FILE_TYPE=c; \
+	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
+	gcc -shared -fPIC $$FILES -o ./Python_tb/libmylib.so
 
 cocotb:
 	. ~/venvs/pyuvm/bin/activate && \
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim $(COCO_TRGT); \
 	deactivate
 
-gtkwave: cocotb
+gtkwave:
+	$(MAKE) cocotb GUI=1
 	gtkwave dump.fst 
 
 project:
