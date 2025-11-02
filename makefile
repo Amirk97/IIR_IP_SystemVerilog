@@ -46,7 +46,7 @@ compile_c: $(C_FILES)
 #	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 
 cocotb: compile_c
-	. ~/venvs/pyuvm/bin/activate && \
+	. /home/amir/venvs/pyuvm/bin/activate && \
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim $(COCO_TRGT); \
 	deactivate
 
