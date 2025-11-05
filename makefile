@@ -110,6 +110,15 @@ compile_xcelium_tb:
 # irun -uvm  $$FILES  -64bit
 #	xrun -uvm -sv $$FILES -incdir $(UVM_SRC_PATH) $(UVM_SRC_PATH)/uvm_pkg.sv
 
+compile_verilator_tb:
+	FILE_TYPE=tb; \
+	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
+	echo $$UVM_HOME; \
+	verilator -Wno-fatal --binary -j $$(nproc) --top-module top_tb_IIR -CFLAGS "-I./C_code_source_FPGA" \
+  +incdir+$$UVM_HOME \
+	$$UVM_HOME/uvm_pkg.sv $$FILES
+
+
 compile_xcelium_rtl:
 	FILE_TYPE=rtl; \
 	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
