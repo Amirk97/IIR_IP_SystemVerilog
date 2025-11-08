@@ -5,11 +5,8 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sources_1/ip/mult_gen_0/mult_gen_0_stub.v
 
   tb:
-    - ./C_code_source_FPGA/IIR_filter.c
-    - ./C_code_source_FPGA/dpi_functions.c
-    - ./C_code_source_FPGA/functions.c
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/config_pkg.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/basic_sequence_item.sv
+    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/item_pkg.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_if.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/const_coeff_item.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/rand_coeff_item.sv
@@ -31,6 +28,34 @@ files:
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_saturation.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_sva.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
+
+  veril_uvm:
+    - ./C_code_source_FPGA/IIR_filter.c
+    - ./C_code_source_FPGA/dpi_functions.c
+    - ./C_code_source_FPGA/functions.c
+    - ./verilator_uvm_tb/config_pkg.sv
+    - ./verilator_uvm_tb/item_pkg.sv
+    - ./verilator_uvm_tb/IIR_if.sv
+    - ./verilator_uvm_tb/const_coeff_item.sv
+    - ./verilator_uvm_tb/rand_coeff_item.sv
+    - ./verilator_uvm_tb/item_saturation.sv
+    - ./verilator_uvm_tb/uvm_sequence.sv
+    - ./verilator_uvm_tb/uvm_sequencer.sv
+    - ./verilator_uvm_tb/uvm_driver.sv
+    - ./verilator_uvm_tb/driver_backpress.sv
+    - ./verilator_uvm_tb/driver_mid_reset_backpress.sv
+    - ./verilator_uvm_tb/uvm_monitor.sv
+    - ./verilator_uvm_tb/uvm_agent.sv
+    - ./verilator_uvm_tb/uvm_scoreboard.sv
+    - ./verilator_uvm_tb/uvm_env.sv
+    - ./verilator_uvm_tb/uvm_test.sv
+    - ./verilator_uvm_tb/test_rand_coeff.sv
+    - ./verilator_uvm_tb/test_const_coeff.sv
+    - ./verilator_uvm_tb/test_rand_coeff_backpress.sv
+    - ./verilator_uvm_tb/test_rand_coeff_backpress_mid_reset.sv
+    - ./verilator_uvm_tb/test_saturation.sv
+    - ./verilator_uvm_tb/IIR_sva.sv
+    - ./verilator_uvm_tb/top_tb_IIR.sv
 
   c:
     - ./C_code_source_FPGA/IIR_filter.c

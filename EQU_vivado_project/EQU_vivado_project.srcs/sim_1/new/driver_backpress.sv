@@ -1,4 +1,3 @@
-import basic_sequence_item::*;
 
 class driver_backpress extends my_driver;
 

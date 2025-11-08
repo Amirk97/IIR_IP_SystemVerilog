@@ -1,4 +1,3 @@
-import basic_sequence_item::*;
 
 class rand_coeff_item extends basic_sequence_item#();
 

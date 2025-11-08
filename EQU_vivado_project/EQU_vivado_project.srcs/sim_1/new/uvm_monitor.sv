@@ -1,4 +1,3 @@
-import basic_sequence_item::*;
 import "DPI-C" function void dpi_init_filter();
 
 class my_monitor extends uvm_monitor;

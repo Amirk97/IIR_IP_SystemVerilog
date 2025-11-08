@@ -1,4 +1,3 @@
-import basic_sequence_item::*;
 
 class my_driver extends uvm_driver#(basic_sequence_item#());
 

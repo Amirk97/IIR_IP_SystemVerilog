@@ -1,4 +1,3 @@
-import basic_sequence_item::*;
 
 class driver_mid_reset_backpress extends driver_backpress;
 

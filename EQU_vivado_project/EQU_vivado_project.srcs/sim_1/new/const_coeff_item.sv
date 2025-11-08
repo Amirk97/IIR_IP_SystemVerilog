@@ -1,4 +1,4 @@
-import basic_sequence_item::*;
+import item_pkg::*;
 
 class const_coeff_item extends basic_sequence_item#();
 

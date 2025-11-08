@@ -1,4 +1,3 @@
-import basic_sequence_item::*;
 
 class my_sequence extends uvm_sequence #(basic_sequence_item#());
 

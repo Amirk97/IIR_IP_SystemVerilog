@@ -2,7 +2,7 @@
 import uvm_pkg::*;
 import config_pkg::*;
 
-package basic_sequence_item;
+package item_pkg;
 
 import "DPI-C" function void dpi_get_coeff (int idx, output real arr[],  output real arr2[]);
    

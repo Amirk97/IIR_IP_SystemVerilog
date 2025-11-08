@@ -1,4 +1,3 @@
-import basic_sequence_item::*;
 
 class item_saturation extends basic_sequence_item#();
 
