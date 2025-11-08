@@ -21,6 +21,13 @@ clib.get_coeff.argtypes = [c_int]
 #coeffs = lib.get_coeff(0)
 #print(f"input coeff is {coeffs.input_coeff[1]}")
 
+def signed(numb, width):
+    if (numb >> (width-1)):
+        return(-((2 ** width) - numb))
+    else:
+        return numb
+
+
 @vsc.randobj
 class item_basic(uvm_sequence_item):
 

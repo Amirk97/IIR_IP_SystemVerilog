@@ -22,7 +22,6 @@ async def top_tb_IIR(IIR):
     IIR.rst_i.value = 1
     uvm_root().logger.info("[RSTDV] Reset was released here!")
     
-#    ConfigDB().set(None, "uvm_test_top.env.agent", "dut", IIR)
     await uvm_root().run_test("test")
 
     uvm_root().logger.info("Exiting the test")

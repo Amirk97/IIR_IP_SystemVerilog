@@ -12,9 +12,10 @@ from pyuvm import *
 class test(uvm_test):
 
     def build_phase(self):
-        print(self.get_name())
-        ConfigDB().set(self, "env.agent", "dut", cocotb.top)
+        
         self.logger.info("We are in the test build phase now!")
+        IIR_if = IIR_if_cls(cocotb.top)
+        ConfigDB().set(self, "env.agent", "if", IIR_if)
         self.env = env.create("env", self)
         self.sequence = sequence.create("seq")
 
@@ -27,3 +28,9 @@ class test(uvm_test):
         await Timer(100, unit='ns')
         self.logger.info("Test is done!")
         self.drop_objection();
+
+class IIR_if_cls():
+
+    def __init__(self, dut):
+        self.dut = dut
+        self.coeff_index = 10
