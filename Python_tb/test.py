@@ -2,8 +2,6 @@ import cocotb
 import pyuvm
 from env import env
 from sequence import sequence
-from item_basic import item_basic
-from item_const_coeff import item_const_coeff
 
 from cocotb.triggers import Timer, RisingEdge
 from cocotb.clock import Clock
@@ -18,8 +16,6 @@ class test(uvm_test):
         ConfigDB().set(self, "env.agent", "if", IIR_if)
         self.env = env.create("env", self)
         self.sequence = sequence.create("seq")
-
-        uvm_factory().set_type_override_by_type(item_basic, item_const_coeff)
 
     async def run_phase(self):
         self.raise_objection();

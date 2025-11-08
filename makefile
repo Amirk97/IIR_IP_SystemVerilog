@@ -17,6 +17,9 @@ UVM_SRC_PATH = $(shell python3 yaml_parser.py files.yaml uvm_src_path)
 
 CONTAINER_NAME ?= xc_env_cnt1
 
+TESTCASE ?= test_const_coeff
+PY_TESTCASE ?= test_const_coeff
+
 GUI ?= 0
 
 ifeq ($(GUI),1)
@@ -34,16 +37,13 @@ TOPLEVEL = IIR
 COCOTB_TEST_MODULES = top_tb_IIR
 SIM = verilator
 COCO_TRGT ?= all
-export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI PYTHONPATH VERILATOR_COMPILE_ARGS
+export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI PYTHONPATH VERILATOR_COMPILE_ARGS PY_TESTCASE
 
-TESTCASE ?= test_const_coeff
 
 compile_c: $(C_FILES)
 	echo $(C_FILES)
 	gcc -shared -fPIC $(C_FILES) -o ./Python_tb/libmylib.so &&
 	@touch $@
-#	FILE_TYPE=c; \
-#	FILES=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 
 cocotb: compile_c
 	. /home/amir/venvs/pyuvm/bin/activate && \
@@ -74,7 +74,7 @@ regression_sv_uvm:
 
 regression_all:
 	$(MAKE) regression_sv_uvm
-	$(MAKE) cocotb GUI=1
+	$(MAKE) cocotb
 
 create_container:
 	docker run --name $(CONTAINER_NAME) \
