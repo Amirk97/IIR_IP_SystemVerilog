@@ -47,11 +47,11 @@ compile_c: $(C_FILES)
 
 cocotb: compile_c
 	. /home/amir/venvs/pyuvm/bin/activate && \
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim $(COCO_TRGT); \
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim $(COCO_TRGT) PY_TESTCASE=$(PY_TESTCASE); \
 	deactivate
 
 gtkwave:
-	$(MAKE) cocotb GUI=1
+	$(MAKE) cocotb GUI=1 PY_TESTCASE=$(PY_TESTCASE)
 	gtkwave dump.fst 
 
 project:
