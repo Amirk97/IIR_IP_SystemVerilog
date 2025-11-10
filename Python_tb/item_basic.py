@@ -60,7 +60,8 @@ class item_basic(uvm_sequence_item):
         self.enable_change = vsc.rand_bit_t(1)
 
     def post_randomize(self):
-
+        with open("f.txt", "a") as f:
+            print(f"enable_change is {self.enable_change}", file=f)
         # Fetch coeffs
         self.prev_coeff_index = int(self.coeff_index)
         coeffs = clib.get_coeff(int(self.coeff_index))

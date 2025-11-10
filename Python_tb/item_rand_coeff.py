@@ -1,6 +1,7 @@
 from item_basic import item_basic
 import vsc
 
+@vsc.randobj
 class item_rand_coeff(item_basic):
 
     @vsc.constraint

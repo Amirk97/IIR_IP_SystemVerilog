@@ -39,6 +39,10 @@ SIM = verilator
 COCO_TRGT ?= all
 export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI PYTHONPATH VERILATOR_COMPILE_ARGS PY_TESTCASE
 
+regression_coco:
+	pytest ./Python_tb/test_manager.py --junitxml=results.xml
+	xmllint --format results.xml -o results.xml
+	xmllint --format results.xml
 
 compile_c: $(C_FILES)
 	echo $(C_FILES)
@@ -74,7 +78,7 @@ regression_sv_uvm:
 
 regression_all:
 	$(MAKE) regression_sv_uvm
-	$(MAKE) cocotb
+	$(MAKE) regression_coco
 
 create_container:
 	docker run --name $(CONTAINER_NAME) \
