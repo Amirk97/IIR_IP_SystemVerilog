@@ -11,7 +11,7 @@ class sequence(uvm_sequence):
     async def body(self):
         item = item_basic.create(name="item")
 
-        for i in range(100):
+        for i in range(1000):
             await self.start_item(item)
             item.randomize()
             await self.finish_item(item)

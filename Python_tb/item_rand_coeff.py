@@ -7,8 +7,8 @@ class item_rand_coeff(item_basic):
     @vsc.constraint
     def change_rand(self): 
         vsc.dist(self.enable_change, [
-            vsc.weight(0, 95),
-            vsc.weight(1, 5)])
+            vsc.weight(0, 90),
+            vsc.weight(1, 10)])
 
     @vsc.constraint
     def coeff_rand(self):
