@@ -5,14 +5,14 @@ import vsc
 class item_rand_coeff(item_basic):
 
     @vsc.constraint
-    def change_rand(self): 
-        vsc.dist(self.enable_change, [
+    def coeff_change(self): 
+        vsc.dist(self.coeff_change, [
             vsc.weight(0, 90),
             vsc.weight(1, 10)])
 
     @vsc.constraint
     def coeff_rand(self):
-        with vsc.if_then(self.enable_change == 0):
+        with vsc.if_then(self.coeff_change == 0):
             self.coeff_index == self.prev_coeff_index
         with vsc.else_then:
             self.coeff_index in vsc.rangelist(vsc.rng(0,24))

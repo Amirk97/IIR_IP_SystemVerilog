@@ -57,11 +57,10 @@ class item_basic(uvm_sequence_item):
 
         self.coeff_index = vsc.rand_uint8_t(0)
         self.prev_coeff_index = vsc.uint8_t(0) # Used in child classes for randomizing the coeff_index
-        self.enable_change = vsc.rand_bit_t(1)
+        self.coeff_change = vsc.rand_bit_t(1)
 
     def post_randomize(self):
-        with open("f.txt", "a") as f:
-            print(f"enable_change is {self.enable_change}", file=f)
+
         # Fetch coeffs
         self.prev_coeff_index = int(self.coeff_index)
         coeffs = clib.get_coeff(int(self.coeff_index))
@@ -72,4 +71,4 @@ class item_basic(uvm_sequence_item):
         for i in range(self.OUTPUT_TAPS):
             self.coeff_y_i[i] = int(coeffs.output_coeff[i] * self.FXD_POINT_COEFF)
 
-#        self.logger.info("post randomization done!")
+
