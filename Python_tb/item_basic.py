@@ -57,7 +57,7 @@ class item_basic(uvm_sequence_item):
 
         self.coeff_index = vsc.rand_uint8_t(0)
         self.prev_coeff_index = vsc.uint8_t(0) # Used in child classes for randomizing the coeff_index
-        self.coeff_change = vsc.rand_bit_t(1)
+        self.change = vsc.rand_bit_t(1)
 
     def post_randomize(self):
 

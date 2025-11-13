@@ -2,7 +2,7 @@ import subprocess
 import os
 import pytest
 
-@pytest.mark.parametrize("PY_TESTCASE", ["test_const_coeff", "test_rand_coeff", "test_rand_coeff_backpress", "test_rand_coeff_mid_reset_backpress"])
+@pytest.mark.parametrize("PY_TESTCASE", ["test_const_coeff", "test_rand_coeff", "test_rand_coeff_backpress", "test_rand_coeff_mid_reset_backpress", "test_saturation"])
 def test_regression_suite(PY_TESTCASE):
     env = os.environ.copy()
     env["PY_TESTCASE"] = PY_TESTCASE
