@@ -30,11 +30,11 @@ class monitor(uvm_monitor):
         while True:
             await RisingEdge(self.IIR_if.dut.valid_o)
             self.item.y_o = self.IIR_if.dut.y_o.value
-            self.logger.info(f"Observed output: {signed(self.item.x_i, self.item.DATA_WIDTH)}")
+            self.logger.info(f"Observed output: {signed(self.item.y_o, self.item.DATA_WIDTH)}")
             self.monitor_port.write(self.item)
 
     async def monitor_reset(self):
         while True:
             await FallingEdge(self.IIR_if.dut.rst_i)
             self.logger.info("Observed rest")
-            item_basic.clib.dpi_init_filter()
+            clib.dpi_init_filter()

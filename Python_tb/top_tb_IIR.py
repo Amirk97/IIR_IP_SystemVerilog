@@ -1,6 +1,6 @@
 import cocotb
 import pyuvm
-import test, test_const_coeff, test_rand_coeff, test_rand_coeff_backpress
+import test, test_const_coeff, test_rand_coeff, test_rand_coeff_backpress, test_rand_coeff_mid_reset_backpress
 import os
 
 from cocotb.triggers import Timer, RisingEdge
