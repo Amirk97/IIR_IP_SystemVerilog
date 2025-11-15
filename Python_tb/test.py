@@ -9,6 +9,10 @@ from pyuvm import *
 
 class test(uvm_test):
 
+    def __init__(self, name="test", parent=None):
+        super().__init__(name, parent)
+        self.NUMBER_OF_TESTS = 100
+
     def build_phase(self):
         
         self.logger.info("We are in the test build phase now!")
@@ -16,6 +20,7 @@ class test(uvm_test):
         ConfigDB().set(self, "env.agent", "if", IIR_if)
         self.env = env.create("env", self)
         self.sequence = sequence.create("seq")
+        self.sequence.NUMBER_OF_TESTS = self.NUMBER_OF_TESTS
 
     async def run_phase(self):
         self.raise_objection();
@@ -25,6 +30,7 @@ class test(uvm_test):
         self.logger.info("Test is done!")
         self.drop_objection();
 
+# This class is purposed to add extra properties to interface        
 class IIR_if_cls():
 
     def __init__(self, dut):

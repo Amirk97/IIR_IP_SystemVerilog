@@ -9,8 +9,6 @@ from pyuvm import *
 
 class env(uvm_env):
 
-#    def __init__(self, name="env", parent=None,
-
     def build_phase(self):
         self.logger.info("We are in the env build phase now!")
         self.agent = agent.create("agent", self)

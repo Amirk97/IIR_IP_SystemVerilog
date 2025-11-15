@@ -29,6 +29,12 @@ else
 GUI_FLAG =
 endif
 
+COCOTB_SEED ?=0
+ifeq ($(COCOTB_SEED),0)
+else
+export COCOTB_RANDOM_SEED =$(COCOTB_SEED)
+endif
+
 EXTRA_ARGS += $(shell python3 ./Python_tb/cfg_pkg.py)
 PYTHONPATH = $(shell pwd)/Python_tb/
 TOPLEVEL_LANG = verilog

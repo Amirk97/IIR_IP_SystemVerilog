@@ -11,3 +11,4 @@ class test_saturation(test):
         uvm_factory().set_type_override_by_type(item_basic, item_saturation)
         uvm_factory().set_type_override_by_type(sequence, sequence_sat)
         super().build_phase()
+        self.sequence.NUMBER_OF_TESTS = 10

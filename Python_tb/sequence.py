@@ -5,9 +5,9 @@ import vsc as vsc
 
 class sequence(uvm_sequence):
 
-    def __init__(self, name="sequence", NUMBER_OF_TESTS=100):
+    def __init__(self, name="sequence"):
         super().__init__(name)
-        self.NUMBER_OF_TESTS = NUMBER_OF_TESTS
+        self.NUMBER_OF_TESTS = None
 
     async def body(self):
         item = item_basic.create(name="item")
