@@ -1,17 +1,17 @@
 import cocotb
 import pyuvm
-import test, test_const_coeff, test_rand_coeff, test_rand_coeff_backpress, test_rand_coeff_mid_reset_backpress, test_saturation
+import test, test_const_coeff, test_rand_coeff, test_rand_coeff_backpress, test_saturation, test_rand_coeff_backpress_mid_reset
 import os
 
 from cocotb.triggers import Timer, RisingEdge
 from cocotb.clock import Clock
 from pyuvm import uvm_root, ConfigDB
 
-@cocotb.test()
+testcase = os.environ.get("PY_TESTCASE", "test_const_coeff")
+
+@cocotb.test(name=testcase)
 async def top_tb_IIR(IIR):
     uvm_root().logger.info("Starting PyUVM in cocotb")
-
-    testcase = os.environ.get("PY_TESTCASE", "test_const_coeff")
 
     # Starting the clock
     clock = Clock(IIR.clk_i, 10, unit="ns")

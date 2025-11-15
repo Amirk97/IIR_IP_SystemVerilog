@@ -6,7 +6,7 @@ from driver_mid_reset_backpress import driver_mid_reset_backpress
 from pyuvm import *
 from test import test
 
-class test_rand_coeff_mid_reset_backpress(test):
+class test_rand_coeff_backpress_mid_reset(test):
 
     def build_phase(self):
         super().build_phase()
