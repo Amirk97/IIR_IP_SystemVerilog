@@ -28,7 +28,7 @@ module IIR
     parameter                                 COEFF_WIDTH = 18,
     parameter                                 DATA_FRAC_WIDTH = 0,
     parameter                                 COEFF_FRAC_WIDTH = 15,
-    parameter                                 PROCESS_DELAY = 2, // This depends on the number of pipeline stages is equal to 1 + PIPELINE_STAGE
+    parameter                                 PROCESS_DELAY = 2, // This depends on the number of pipeline stages in the design, and is equal to 1 + PIPELINE_STAGE
     localparam                                FRAC_WIDTH = DATA_FRAC_WIDTH + COEFF_FRAC_WIDTH,
     localparam                                MULTIPLY_WIDTH = DATA_WIDTH + COEFF_WIDTH - 1,
     localparam                                I_ACC_WIDTH = MULTIPLY_WIDTH + INPUT_TAPS - 1,
@@ -180,9 +180,10 @@ module IIR
    /* verilator lint_on WIDTHEXPAND */
    assign acc_res_rounded = acc_res + ROUNDING_ERROR;  // Also summation for negative numbers since later on slicing gonna round downwards
 
-   // Check for OF and UF assuming 24bits of data  
+   // Check for saturation
    always_comb begin
-      if (^acc_res_rounded[RES_ACC_WIDTH:(FRAC_WIDTH+DATA_WIDTH-1)]) begin
+      // Checking to see if the sign bits are uniform or not
+      if (&acc_res_rounded[RES_ACC_WIDTH:(FRAC_WIDTH+DATA_WIDTH-1)] != |acc_res_rounded[RES_ACC_WIDTH:(FRAC_WIDTH+DATA_WIDTH-1)]) begin
          if(acc_res_rounded[RES_ACC_WIDTH])
            y  = {1'b1, {(DATA_WIDTH-1){1'b0}}};
          else
@@ -193,7 +194,6 @@ module IIR
    end
 
    //Control part
-
    always_ff @(posedge clk_i or negedge rst_i) begin : FSM
       if (~rst_i) begin
          state <= IDLE;
