@@ -1,15 +1,22 @@
 #include "IIR_filter.h"
 #include <stdio.h>
 #include <string.h>
-#define ARRAY_SIZE 2
 extern coeff_struct const BASS_coeffs[];
 
 filter IIR_filter;
 
-//double input_coeff[] = {1.0, -1.8836532429909993, 0.8900591334898765};
-//double output_coeff[] = {-1.8836532429909993, 0.8900591334898765};
-
-//coeff_struct coeff[ARRAY_SIZE];
+void dpi_init_param_struct(IIR_param_struct* param_struct){
+  IIR_filter.params.INPUT_TAPS      = param_struct->INPUT_TAPS;
+  IIR_filter.params.OUTPUT_TAPS     = param_struct->OUTPUT_TAPS;
+  IIR_filter.params.DATA_WIDTH      = param_struct->DATA_WIDTH;
+  IIR_filter.params.COEFF_FRAC_WIDTH= param_struct->COEFF_FRAC_WIDTH;
+  IIR_filter.params.COEFF_WIDTH     = param_struct->COEFF_WIDTH;
+  IIR_filter.params.DATA_FRAC_WIDTH = param_struct->DATA_FRAC_WIDTH;
+  IIR_filter.params.PROCESS_DELAY   = param_struct->PROCESS_DELAY;
+  printf("In wrapper COEFF_FRAC_WIDTH is %d\n", IIR_filter.params.COEFF_FRAC_WIDTH);
+  printf("In wrapper INPUT_TAPS is %d\n", IIR_filter.params.INPUT_TAPS);
+  fflush(stdout);
+}
 
 void dpi_init_filter(void){
   init_filter(&IIR_filter);

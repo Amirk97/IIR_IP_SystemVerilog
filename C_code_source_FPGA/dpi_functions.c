@@ -16,6 +16,9 @@ int read_index = 0;
 
 void dpi_init_filter(void){
   init_filter(&IIR_filter);
+  // For this tb, these values don't propagate from config_pkg, instead it's hard coded
+  IIR_filter.params.DATA_WIDTH       = 24
+  IIR_filter.params.COEFF_FRAC_WIDTH = 31
 }
 
 int dpi_compute_filter_output(int input, int index) {

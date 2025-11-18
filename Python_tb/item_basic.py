@@ -1,7 +1,7 @@
 from pyuvm import uvm_object, uvm_sequence_item
 import vsc
-from cfg_pkg import *
-from ctypes import CDLL, Structure, POINTER, c_int, c_double
+from cfg_pkg import CFG
+from ctypes import CDLL, Structure, POINTER, c_int, c_double, byref
 
 # Loading the shared C library
 clib = CDLL("./Python_tb/libmylib.so")
@@ -13,20 +13,40 @@ class coeff_struct(Structure):
         ("input_coeff", c_double * CFG["INPUT_TAPS"]),
         ("output_coeff", c_double * CFG["OUTPUT_TAPS"])
     ]
-    
+
 # Declare return and argument types
 clib.get_coeff.restype = coeff_struct
 clib.get_coeff.argtypes = [c_int]
 
-#coeffs = lib.get_coeff(0)
-#print(f"input coeff is {coeffs.input_coeff[1]}")
+class IIR_param_struct(Structure):
+    _fields_ = [
+        ("INPUT_TAPS", c_int),
+        ("OUTPUT_TAPS", c_int),
+        ("DATA_WIDTH" ,c_int),
+        ("DATA_FRAC_WIDTH",c_int),
+        ("COEFF_WIDTH",c_int),
+        ("COEFF_FRAC_WIDTH",c_int)
+    ]
+
+    def __init__(self):
+        self.INPUT_TAPS      = CFG["INPUT_TAPS"]     
+        self.OUTPUT_TAPS     = CFG["OUTPUT_TAPS"]    
+        self.DATA_WIDTH      = CFG["DATA_WIDTH"]     
+        self.COEFF_WIDTH     = CFG["COEFF_WIDTH"]    
+        self.DATA_FRAC_WIDTH = CFG["DATA_FRAC_WIDTH"]
+        self.COEFF_FRAC_WIDTH= CFG["COEFF_FRAC_WIDTH"]
+        print(f"in python COEFF_FRAC_WIDTH is: {self.COEFF_FRAC_WIDTH}")
+# Declare return and argument types
+clib.dpi_init_param_struct.argtypes = [POINTER(IIR_param_struct)]
+
+IIR_param = IIR_param_struct()
+clib.dpi_init_param_struct(byref(IIR_param))
 
 def signed(numb, width):
     if (numb >> (width-1)):
         return(-((2 ** width) - numb))
     else:
         return numb
-
 
 @vsc.randobj
 class item_basic(uvm_sequence_item):
