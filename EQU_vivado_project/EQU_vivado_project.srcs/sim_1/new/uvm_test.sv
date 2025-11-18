@@ -8,7 +8,7 @@ class my_test extends uvm_test;
    my_env env;
    my_sequence seq;
    virtual IIR_if my_if;
-   int     NUMBER_OF_TESTS = 100;
+   int     NUMBER_OF_TESTS = 1000;
 
    //Constructor
    function new(string name = "my_test", uvm_component parent = null);

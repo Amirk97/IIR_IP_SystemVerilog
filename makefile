@@ -153,7 +153,7 @@ compile_xcelium_rtl:
 
 clean:
 	@echo "Cleaning generated files..."
-	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c
+	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c *.fst sim_build
 
 list:
 	@echo "Available projects:"

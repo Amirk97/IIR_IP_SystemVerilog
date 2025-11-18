@@ -12,5 +12,5 @@ class test_rand_coeff_backpress_mid_reset(test):
         super().build_phase()
         uvm_factory().set_type_override_by_type(item_basic, item_rand_coeff)
         uvm_factory().set_type_override_by_type(driver, driver_mid_reset_backpress)
-        self.sequence.NUMBER_OF_TESTS = 100
+        self.sequence.NUMBER_OF_TESTS = 1000
         
