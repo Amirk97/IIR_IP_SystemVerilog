@@ -36,26 +36,30 @@ module IIR
     localparam                                RES_ACC_WIDTH = (I_ACC_WIDTH>O_ACC_WIDTH) ? (I_ACC_WIDTH +2) : (O_ACC_WIDTH +2), // 2 also considering rounding error summation and summing acc_x and acc_y
     localparam logic signed [RES_ACC_WIDTH:0] ROUNDING_ERROR = 2 ** (FRAC_WIDTH-1))
    (
-    input logic [DATA_WIDTH-1:0]  x_i,
-    output logic [DATA_WIDTH-1:0] y_o,
-
+    input logic [DATA_WIDTH-1:0]         x_i,
+    output logic [DATA_WIDTH-1:0]        y_o,
+    /* verilator coverage_off */
+    // By purpose, coeffs are limited to finite sensible values
     input logic signed [COEFF_WIDTH-1:0] coeff_x_i [0:INPUT_TAPS-1], 
     input logic signed [COEFF_WIDTH-1:0] coeff_y_i [0:OUTPUT_TAPS-1], 
-   
-    input logic                   valid_i,
-    output logic                  ready_and_o,
+    /* verilator coverage_on */
+    input logic                          valid_i,
+    output logic                         ready_and_o,
 
-    output logic                  valid_o,
-    input logic                   ready_and_i,
+    output logic                         valid_o,
+    input logic                          ready_and_i,
 
-    input logic                   clk_i,
-    input logic                   rst_i);
+    input logic                          clk_i,
+    input logic                          rst_i);
    
    logic signed [DATA_WIDTH-1:0] input_tap [0:INPUT_TAPS-1];
    logic signed [DATA_WIDTH-1:0] output_tap [0:OUTPUT_TAPS-1];
 
+   /* verilator coverage_off */
+   // By purpose, coeffs are limited to finite sensible values
    logic signed [COEFF_WIDTH-1:0] coeff_x [0:INPUT_TAPS-1];      
    logic signed [COEFF_WIDTH-1:0] coeff_y [0:OUTPUT_TAPS-1];
+   /* verilator coverage_on */
 
    logic signed [MULTIPLY_WIDTH:0] multi_prod_x [0:INPUT_TAPS-1];
    logic signed [MULTIPLY_WIDTH:0] multi_prod_y [0:OUTPUT_TAPS-1];
@@ -73,7 +77,7 @@ module IIR
    logic [DATA_WIDTH-1:0]          y;   
    logic [DATA_WIDTH-1:0]          y_tap;   
 
-   typedef enum bit [2:0] {IDLE, PROCESS, STORE} state_t;
+   typedef enum bit [1:0] {IDLE, PROCESS, STORE} state_t;
    state_t  state;
    state_t  next_state;
    logic process_done;   
@@ -230,9 +234,11 @@ module IIR
            output_en = '1;
            next_state = IDLE; 
            end
-      
+        // Turning coverage off cause this part is unreachable in simulation but necessary
+        /* verilator coverage_off */
         default:
           next_state = IDLE;
+        /* verilator coverage_on */
       endcase
    end // always_comb
 
@@ -254,30 +260,36 @@ module IIR
          end
       end
    end // block: VALID_O_READY_O
-   
-   typedef logic unsigned [$clog2(PROCESS_DELAY):0] counter_t;   
-   counter_t counter;
-   
-   always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
-      if (~rst_i) begin
-         counter = '0;         
-      end
-      else if (state ==  PROCESS) begin
-         counter += 1'b1;         
-      end else
-        counter = '0;      
-   end  : counter_reg
 
-   always_comb begin
-      if (PROCESS_DELAY-2 <= 0)
-        process_done = '1;
+
+   generate
+      if (PROCESS_DELAY <= 2) begin
+         assign process_done = '1;
+      end
       else begin
-         if (counter == counter_t'(PROCESS_DELAY-2)) begin
-            process_done = '1;         
-         end 
-         else
-           process_done = '0;
-      end
-   end
+         // If the latency of the process state is custom(have used pipeline), then this part helps with generating appropriate done signal
+         typedef logic unsigned [$clog2(PROCESS_DELAY):0] counter_t;   
+         counter_t counter;
+         
+         always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
+            if (~rst_i) begin
+               counter = '0;         
+            end
+            else if (state ==  PROCESS) begin
+               counter += 1'b1;         
+            end else
+              counter = '0;      
+         end  : counter_reg
 
+         always_comb begin
+            if (counter == counter_t'(PROCESS_DELAY-2)) begin
+               process_done = '1;         
+            end 
+            else begin
+               process_done = '0;
+            end
+         end
+      end // else: !if(PROCESS_DELAY <= 2)
+   endgenerate
+   
 endmodule

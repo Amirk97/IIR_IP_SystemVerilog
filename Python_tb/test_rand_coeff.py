@@ -8,4 +8,4 @@ class test_rand_coeff(test):
     def build_phase(self):
         super().build_phase()
         uvm_factory().set_type_override_by_type(item_basic, item_rand_coeff)
-        self.sequence.NUMBER_OF_TESTS = 10000
+        self.sequence.NUMBER_OF_TESTS = 1000

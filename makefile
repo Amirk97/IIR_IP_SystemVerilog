@@ -19,7 +19,7 @@ CONTAINER_NAME ?= xc_env_cnt1
 
 TESTCASE ?= test_const_coeff
 PY_TESTCASE ?= test_const_coeff
-
+CFG_INDX ?=0
 GUI ?= 0
 
 ifeq ($(GUI),1)
@@ -35,7 +35,9 @@ else
 export COCOTB_RANDOM_SEED =$(COCOTB_SEED)
 endif
 
-EXTRA_ARGS += $(shell python3 ./Python_tb/cfg_pkg.py)
+#For Giving the params to verilator
+#EXTRA_ARGS += $(shell CFG_INDX=$(CFG_INDX) python3 ./Python_tb/cfg_pkg.py)
+EXTRA_ARGS += --coverage --trace-coverage 
 PYTHONPATH = $(shell pwd)/Python_tb/
 TOPLEVEL_LANG = verilog
 VERILOG_SOURCES = $(shell pwd)/EQU_vivado_project/EQU_vivado_project.srcs/sources_1/new/*.sv
@@ -43,8 +45,9 @@ TOPLEVEL = IIR
 COCOTB_TEST_MODULES = top_tb_IIR
 SIM = verilator
 COCO_TRGT ?= all
-export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI PYTHONPATH VERILATOR_COMPILE_ARGS PY_TESTCASE COCOTB_FAIL_ON_ERROR
+export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI PYTHONPATH VERILATOR_COMPILE_ARGS PY_TESTCASE COCOTB_FAIL_ON_ERROR CFG_INDX
 
+# Doesn't run reliably in terms of generated xml file
 regression_coco_pytest:
 	pytest -vv -s ./Python_tb/test_manager.py --junitxml=pytest_results.xml
 	xmllint --format pytest_results.xml -o pytest_results.xml
@@ -56,6 +59,9 @@ compile_c: $(C_FILES)
 	@touch $@
 
 cocotb: compile_c
+	rm -rf ./sim_build
+	CFG=$$(CFG_INDX=$(CFG_INDX) PY_TESTCASE=$(PY_TESTCASE) python3 ./Python_tb/cfg_pkg.py)
+	EXTRA_ARGS="$${EXTRA_ARGS} $${CFG}"
 	. /home/amir/venvs/pyuvm/bin/activate && \
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim $(COCO_TRGT) PY_TESTCASE=$(PY_TESTCASE); \
 	deactivate
@@ -65,18 +71,24 @@ gtkwave:
 	gtkwave dump.fst 
 
 regression_coco:
-	FILE_TYPE=tests; \
+	FILE_TYPE=tests_py; \
 	TESTS=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
 	echo $$TESTS; \
 	TESTLOGS=""; \
+	COVLOGS=""; \
+	rm test-results/*.xml
+	rm total_coverage
 	for t in $$TESTS;do \
 		$(MAKE) cocotb PY_TESTCASE=$$t > /dev/null; \
 	  mv results.xml test-results/$${t}.xml
 		TESTLOGS="$${TESTLOGS} test-results/$${t}.xml"
+		mv coverage.dat ./coverage_report/$${t}_coverage.dat
+	 	COVLOGS="$${COVLOGS} ./coverage_report/$${t}_coverage.dat"	
 	done; \
 	echo $$TESTLOGS
 	python3 cocotb_xml_parser.py $$TESTLOGS; \
-
+	verilator_coverage $${COVLOGS} --write total_coverage;\
+	verilator_coverage total_coverage --annotate coverage_report --annotate-points
 
 project:
 	@echo "Building project: $(proj)"
@@ -153,7 +165,7 @@ compile_xcelium_rtl:
 
 clean:
 	@echo "Cleaning generated files..."
-	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c *.fst sim_build
+	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c *.fst sim_build test-results/*.xml total_coverage
 
 list:
 	@echo "Available projects:"

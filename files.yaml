@@ -69,6 +69,14 @@ tests:
   - test_rand_coeff_backpress_mid_reset
   - test_saturation
 
+tests_py:
+  - test_const_coeff
+  - test_rand_coeff
+  - test_rand_coeff_backpress
+  - test_rand_coeff_backpress_mid_reset
+  - test_saturation
+  - test_process_delay
+
 include_dirs:
   uvm: /tools/Cadence/installs/XCELIUM2403/tools.lnx86/methodology/UVM/CDNS-IEEE-ML/sv/src
 

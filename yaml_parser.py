@@ -29,5 +29,8 @@ elif (sys.argv[2] == "uvm_src_path"):
 elif (sys.argv[2] == "tests"):
     for files in config['tests']:
         print(files)
+elif (sys.argv[2] == "tests_py"):
+    for files in config['tests_py']:
+        print(files)
 
         

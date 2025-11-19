@@ -21,12 +21,12 @@ class driver(uvm_driver):
             self.logger.info("Recieved the item in driver")
 
             self.IIR_if.dut.x_i.value = item.x_i
-            self.IIR_if.dut.valid_i.value = 1
             self.IIR_if.dut.coeff_x_i.value = item.coeff_x_i
             self.IIR_if.dut.coeff_y_i.value = item.coeff_y_i
             self.IIR_if.coeff_index = item.coeff_index
             # This part can be problematic cause im waiting for and edge not a level
             await RisingEdge(self.IIR_if.dut.ready_and_o)
+            self.IIR_if.dut.valid_i.value = 1
             await FallingEdge(self.IIR_if.dut.ready_and_o)
             self.IIR_if.dut.valid_i.value = 0
             
