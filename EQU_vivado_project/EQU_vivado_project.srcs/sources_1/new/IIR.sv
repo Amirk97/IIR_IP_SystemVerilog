@@ -64,9 +64,9 @@ module IIR
    logic signed [MULTIPLY_WIDTH:0] multi_prod_x [0:INPUT_TAPS-1];
    logic signed [MULTIPLY_WIDTH:0] multi_prod_y [0:OUTPUT_TAPS-1];
 
-   logic signed [I_ACC_WIDTH:0]    acc_x ;
+   logic signed [I_ACC_WIDTH:0]    acc_x_reg ;
    logic signed [I_ACC_WIDTH:0]    acc_x_comb ;
-   logic signed [O_ACC_WIDTH:0]    acc_y ;
+   logic signed [O_ACC_WIDTH:0]    acc_y_reg ;
    logic signed [O_ACC_WIDTH:0]    acc_y_comb;
    logic signed [RES_ACC_WIDTH:0]  acc_res;
    logic signed [RES_ACC_WIDTH:0]  acc_res_rounded;
@@ -160,16 +160,17 @@ module IIR
       end
    end
 
+   // This part is adding one pipeline stage therefore PROCESS_DELAY += 1
    always_ff @(posedge clk_i or negedge rst_i) begin
       if (~rst_i) begin
-         acc_x <= '0;
-         acc_y <= '0;
+         acc_x_reg <= '0;
+         acc_y_reg <= '0;
          y_tap <= '0;      
       end
       else begin
          if(state == PROCESS) begin
-            acc_x <= acc_x_comb;
-            acc_y <= acc_y_comb;
+            acc_x_reg <= acc_x_comb;
+            acc_y_reg <= acc_y_comb;
          end
          if (output_en)
            y_tap <= y;         
@@ -180,7 +181,7 @@ module IIR
    // Rounding
    // Turning off the verilator lint cause acc_res size is also considering the summation with rounding
    /* verilator lint_off WIDTHEXPAND */
-   assign acc_res = acc_x - acc_y;
+   assign acc_res = acc_x_reg - acc_y_reg;
    /* verilator lint_on WIDTHEXPAND */
    assign acc_res_rounded = acc_res + ROUNDING_ERROR;  // Also summation for negative numbers since later on slicing gonna round downwards
 

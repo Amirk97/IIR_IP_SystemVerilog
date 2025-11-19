@@ -76,7 +76,7 @@ regression_coco:
 	echo $$TESTS; \
 	TESTLOGS=""; \
 	COVLOGS=""; \
-	rm test-results/*.xml
+	rm test-results/test*.xml
 	rm total_coverage
 	for t in $$TESTS;do \
 		$(MAKE) cocotb PY_TESTCASE=$$t > /dev/null; \
