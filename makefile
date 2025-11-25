@@ -78,17 +78,20 @@ regression_coco:
 	COVLOGS=""; \
 	rm test-results/test*.xml
 	rm total_coverage
+	rm coverage_report/*.sv coverage_report/*.dat *.dat
 	for t in $$TESTS;do \
 		$(MAKE) cocotb PY_TESTCASE=$$t > /dev/null; \
 	  mv results.xml test-results/$${t}.xml
 		TESTLOGS="$${TESTLOGS} test-results/$${t}.xml"
 		mv coverage.dat ./coverage_report/$${t}_coverage.dat
-	 	COVLOGS="$${COVLOGS} ./coverage_report/$${t}_coverage.dat"	
+	 	COVLOGS="$${COVLOGS} $${t}_coverage.dat"	
 	done; \
 	echo $$TESTLOGS
 	python3 cocotb_xml_parser.py $$TESTLOGS; \
+	cd coverage_report;\
 	verilator_coverage $${COVLOGS} --write total_coverage;\
-	verilator_coverage total_coverage --annotate coverage_report --annotate-points
+	verilator_coverage total_coverage --annotate ./ --annotate-points --annotate-all
+
 
 project:
 	@echo "Building project: $(proj)"
@@ -111,7 +114,7 @@ regression_sv_uvm:
 regression_all:
 	$(MAKE) regression_sv_uvm
 	$(MAKE) regression_coco
-	xmllint --format test-results/results.xml
+	xmllint --format test-results/results_xcelium.xml
 	xmllint --format test-results/results_cocotb.xml
 
 create_container:
@@ -165,7 +168,7 @@ compile_xcelium_rtl:
 
 clean:
 	@echo "Cleaning generated files..."
-	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c *.fst sim_build test-results/*.xml total_coverage
+	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c *.fst sim_build test-results/*.xml total_coverage coverage_report/*.sv coverage_report/*.dat ./*.dat
 
 list:
 	@echo "Available projects:"

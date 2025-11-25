@@ -41,7 +41,7 @@ testsuite.set('failures', str(total_failure_cnt))
 
 indent(testsuite)
 
-xml_path = os.path.join('test-results', 'results.xml')
+xml_path = os.path.join('test-results', 'results_xcelium.xml')
 
 
 xml_str = tostring(testsuite, encoding='utf-8', method='xml')
