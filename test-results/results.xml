@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="regression_suite" tests="5" failures="0" errors="0">
-  <testcase classname="regression" name="test_const_coeff" />
-  <testcase classname="regression" name="test_rand_coeff" />
-  <testcase classname="regression" name="test_rand_coeff_backpress" />
-  <testcase classname="regression" name="test_rand_coeff_backpress_mid_reset" />
-  <testcase classname="regression" name="test_saturation" />
-</testsuite>
