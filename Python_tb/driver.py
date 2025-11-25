@@ -12,6 +12,7 @@ class driver(uvm_driver):
     async def run_phase(self):
         cocotb.start_soon(self.driver_data())
         cocotb.start_soon(self.driver_ready())
+        cocotb.start_soon(self.driver_valid())
 
     async def driver_data(self):
 
@@ -26,14 +27,14 @@ class driver(uvm_driver):
             self.IIR_if.coeff_index = item.coeff_index
             # This part can be problematic cause im waiting for and edge not a level
             await RisingEdge(self.IIR_if.dut.ready_and_o)
-            self.IIR_if.dut.valid_i.value = 1
+            # Wait until data gets eventually consumed
             await FallingEdge(self.IIR_if.dut.ready_and_o)
-            self.IIR_if.dut.valid_i.value = 0
             
             self.logger.info("Drove the item in driver")
             self.seq_item_port.item_done()
 
     async def driver_ready(self):
+        self.IIR_if.dut.ready_and_i.value = 1
 
-            self.IIR_if.dut.ready_and_i.value = 1
-
+    async def driver_valid(self):
+        self.IIR_if.dut.valid_i.value = 1

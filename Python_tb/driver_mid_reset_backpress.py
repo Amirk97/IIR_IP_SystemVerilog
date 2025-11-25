@@ -5,7 +5,7 @@ from driver_backpress import driver_backpress
 
 class driver_mid_reset_backpress(driver_backpress):
 
-    def __init__(self, name="driver_backpress", parent=None):
+    def __init__(self, name="driver_mid_reset_backpress", parent=None):
         super().__init__(name,parent)
         self.rand_reset = vsc.rand_bit_t(1)
 

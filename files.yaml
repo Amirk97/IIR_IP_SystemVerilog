@@ -74,6 +74,7 @@ tests_py:
   - test_rand_coeff
   - test_rand_coeff_backpress
   - test_rand_coeff_backpress_mid_reset
+  - test_rand_valid
   - test_saturation
   - test_process_delay
 
