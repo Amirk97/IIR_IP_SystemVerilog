@@ -104,7 +104,7 @@ regression_sv_uvm:
 	docker start $(CONTAINER_NAME); \
 	TESTLOG=""; \
 	for t in $$TESTS;do \
-		$(MAKE) exec_docker TESTCASE=$$t > /dev/null; \
+		$(MAKE) exec_docker TESTCASE=$$t ; \
 		TESTLOG="$${TESTLOG} test-results/$${t}.log" ; \
 	done; \
 	docker cp $(CONTAINER_NAME):/proj/test-results/. ./test-results/; \
@@ -168,7 +168,8 @@ compile_xcelium_rtl:
 
 clean:
 	@echo "Cleaning generated files..."
-	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c *.fst sim_build test-results/*.xml total_coverage coverage_report/*.sv coverage_report/*.dat ./*.dat
+	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c *.fst sim_build test-results/*.xml total_coverage coverage_report/*.sv coverage_report/*.dat ./*.dat .bpad *.err *.diag
+	rmdir ./.simvision
 
 list:
 	@echo "Available projects:"

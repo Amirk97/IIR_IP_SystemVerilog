@@ -1,33 +1,33 @@
 files:
   rtl:
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sources_1/new/IIR.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sources_1/new/multiplier_wrapper.sv
+    - ./rtl/IIR.sv
+    - ./rtl/multiplier_wrapper.sv
     - ./EQU_vivado_project/EQU_vivado_project.srcs/sources_1/ip/mult_gen_0/mult_gen_0_stub.v
 
   tb:
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/config_pkg.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/item_pkg.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_if.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/const_coeff_item.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/rand_coeff_item.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/item_saturation.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequence.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_sequencer.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_driver.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/driver_backpress.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/driver_mid_reset_backpress.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_monitor.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_agent.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_scoreboard.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_env.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/uvm_test.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_rand_coeff.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_const_coeff.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_rand_coeff_backpress.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_rand_coeff_backpress_mid_reset.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/test_saturation.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/IIR_sva.sv
-    - ./EQU_vivado_project/EQU_vivado_project.srcs/sim_1/new/top_tb_IIR.sv
+    - ./sv_uvm_tb/config_pkg.sv
+    - ./sv_uvm_tb/item_pkg.sv
+    - ./sv_uvm_tb/IIR_if.sv
+    - ./sv_uvm_tb/const_coeff_item.sv
+    - ./sv_uvm_tb/rand_coeff_item.sv
+    - ./sv_uvm_tb/item_saturation.sv
+    - ./sv_uvm_tb/uvm_sequence.sv
+    - ./sv_uvm_tb/uvm_sequencer.sv
+    - ./sv_uvm_tb/uvm_driver.sv
+    - ./sv_uvm_tb/driver_backpress.sv
+    - ./sv_uvm_tb/driver_mid_reset_backpress.sv
+    - ./sv_uvm_tb/uvm_monitor.sv
+    - ./sv_uvm_tb/uvm_agent.sv
+    - ./sv_uvm_tb/uvm_scoreboard.sv
+    - ./sv_uvm_tb/uvm_env.sv
+    - ./sv_uvm_tb/uvm_test.sv
+    - ./sv_uvm_tb/test_rand_coeff.sv
+    - ./sv_uvm_tb/test_const_coeff.sv
+    - ./sv_uvm_tb/test_rand_coeff_backpress.sv
+    - ./sv_uvm_tb/test_rand_coeff_backpress_mid_reset.sv
+    - ./sv_uvm_tb/test_saturation.sv
+    - ./sv_uvm_tb/IIR_sva.sv
+    - ./sv_uvm_tb/top_tb_IIR.sv
 
   veril_uvm:
     - ./C_code_source_FPGA/IIR_filter.c
@@ -58,9 +58,9 @@ files:
     - ./verilator_uvm_tb/top_tb_IIR.sv
 
   c:
-    - ./C_code_source_FPGA/IIR_filter.c
-    - ./C_code_source_FPGA/py_functions.c
-    - ./C_code_source_FPGA/functions.c
+    - ./model/IIR_filter.c
+    - ./model/py_functions.c
+    - ./model/functions.c
 
 tests:
   - test_const_coeff
