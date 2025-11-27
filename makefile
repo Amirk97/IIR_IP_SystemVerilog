@@ -40,7 +40,7 @@ endif
 EXTRA_ARGS += --coverage --trace-coverage 
 PYTHONPATH = $(shell pwd)/Python_tb/
 TOPLEVEL_LANG = verilog
-VERILOG_SOURCES = $(shell pwd)/EQU_vivado_project/EQU_vivado_project.srcs/sources_1/new/*.sv
+VERILOG_SOURCES = $(shell pwd)/rtl/*.sv
 TOPLEVEL = IIR
 COCOTB_TEST_MODULES = top_tb_IIR
 SIM = verilator
