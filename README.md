@@ -50,3 +50,8 @@ The provided testsuite passes 100% line coverage with Verilator and different fu
 
 ### Datapath architecture
 ![Architecture](images/Data_path.JPG)
+
+### Controlpath architecture
+![state machine](images/sm.png)
+- The state machine is a mixture of Mealy and Moore, since for minimum latency I wanted to load in the data into the taps asap
+- The ready/valid signals on both input and output interface work copperatively.
