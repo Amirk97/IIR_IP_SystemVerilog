@@ -43,8 +43,11 @@ For my personal work flow I have developed a Makefile that can be used to build 
   - `make regression_coco`
   - `make regression_all`
 
+## Test results
+The test results from regression runs can be found under test-results folder, the results are compatible with JUnit format and ready to be used in a CI/CD flow! The respective coverage results can also be found under coverage_report. 
+
 ## RTL Verification status
-The main testbench for verification of this IP is the one which is written in Pyhton and can be run with other open-source tools. Provided testsuite for Python testbench passes 100% line coverage with Verilator and different functional aspects of the design have been stressed. Below is the list of testcases that were created for the design:
+The main testbench for verification of this IP is the one which is written in Python and can be run with other open-source tools. Provided testsuite for Python testbench passes 100% line coverage with Verilator and different functional aspects of the design have been stressed. The testbench is self-checking and results are compared against a C model implementation of the design. Below is the list of testcases that were created for the design:
 
 - `test_const_coef`
 - `test_rand_coeff`
