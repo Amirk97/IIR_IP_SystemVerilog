@@ -27,10 +27,10 @@ For my personal work flow I have developed a Makefile that can be used to build 
 
 - For the Systemverilog UVM simulation with xcelium, I have used docker to containerized my runs and different Testcases can be run with these commands:
     - `make create_container CONTAINER_NAME=xc_env_cnt2`
-    - `make run_container TESTCASE=test_cosnt_coeff GUI=0 CONTAINER_NAME=xc_env_cnt2`
+    - `make run_container TESTCASE=test_cosnt_coeff GUI=0 CONTAINER_NAME=xc_env_cnt2 XCE_SEED=12345`
   
   - If you are not using docker, you could just directly run this command:
-      - `make compile_xcelium_tb TESTCASE=test_rand_coeff GUI=0`
+      - `make compile_xcelium_tb TESTCASE=test_rand_coeff GUI=0 XCE_SEED=12345`
 
 - For running the Python testbench in batch mode, you can use the target below:
   - `make cocotb PY_TESTCASE=test_rand_coeff COCOTB_SEED=12345`
@@ -44,7 +44,7 @@ For my personal work flow I have developed a Makefile that can be used to build 
   - `make regression_all`
 
 ## Verification status
-The provided testsuite for Python testbench passes 100% line coverage with Verilator and different functional aspects of the design have been stressed. Below is the list of testcases that were created for the design:
+The main testbench for verification of this IP is the one which is written in Pyhton and can be run with other open-source tools. Provided testsuite for Python testbench passes 100% line coverage with Verilator and different functional aspects of the design have been stressed. Below is the list of testcases that were created for the design:
 
 - `test_const_coef`
 - `test_rand_coeff`
