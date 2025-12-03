@@ -15,7 +15,7 @@ TOOL =
 
 UVM_SRC_PATH = $(shell python3 yaml_parser.py files.yaml uvm_src_path)
 
-CONTAINER_NAME ?= xc_env_cnt1
+CONTAINER_NAME ?= xc_env_cnt2
 
 TESTCASE ?= test_const_coeff
 PY_TESTCASE ?= test_const_coeff
@@ -35,8 +35,8 @@ else
 export COCOTB_RANDOM_SEED =$(COCOTB_SEED)
 endif
 
+XCE_SEED ?= random
 #For Giving the params to verilator
-#EXTRA_ARGS += $(shell CFG_INDX=$(CFG_INDX) python3 ./Python_tb/cfg_pkg.py)
 EXTRA_ARGS += --coverage --trace-coverage 
 PYTHONPATH = $(shell pwd)/Python_tb/
 TOPLEVEL_LANG = verilog
@@ -121,13 +121,13 @@ create_container:
 	docker run --name $(CONTAINER_NAME) \
 	-e DISPLAY=$DISPLAY \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
-	-v /media/amir/1C8F205019F09CF8/Users/amir9/Documents/EQU/:/proj \
+	-v /mnt/drive2/Documents/IIR/:/proj \
 	-v /tools/Cadence:/mnt/Cadence \
 	-d xc-env \
 	tail -f /dev/null
 
 exec_docker:
-	docker exec  $(CONTAINER_NAME) bash -c "export DISPLAY=:0 && cd /proj && source /tools/Cadence/installs/XCELIUM2403/setup_xcelium.sh && make compile_xcelium_tb GUI=$(GUI) TESTCASE=$(TESTCASE)"
+	docker exec  $(CONTAINER_NAME) bash -c "export DISPLAY=:0 && cd /proj && source /tools/Cadence/installs/XCELIUM2403/setup_xcelium.sh && make compile_xcelium_tb GUI=$(GUI) TESTCASE=$(TESTCASE) XCE_SEED=$(XCE_SEED)"
 
 run_container:
 	docker start $(CONTAINER_NAME)
@@ -144,7 +144,7 @@ compile_xcelium_tb:
 	echo $(GUI); \
 	echo $(TESTCASE); \
 	xrun -access +rwc -elaborate -snapshot my_design -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA" +assertdebug; \
-	xrun -64bit -R  $(GUI_FLAG) -snapshot my_design +UVM_TESTNAME=$(TESTCASE) -UVMLINEDEBUG -linedebug -access +rwc -uvm -logfile test-results/$(TESTCASE).log -svseed random +assertdebug
+	xrun -64bit -R  $(GUI_FLAG) -snapshot my_design +UVM_TESTNAME=$(TESTCASE) -UVMLINEDEBUG -linedebug -access +rwc -uvm -logfile test-results/$(TESTCASE).log -svseed $(XCE_SEED) +assertdebug
 # -coverage all ;-covtest $(TESTCASE) -covwork ./cov/$(TESTCASE) -covoverwrite
 #	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA" +UVM_TESTNAME=$(TESTCASE) -logfile $(	TESTCASE).log
 # -svseed 12345
