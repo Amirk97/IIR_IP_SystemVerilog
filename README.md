@@ -1,6 +1,15 @@
 # IIR Filter RTL Design and Verification
 This project aims to provide high-quality, open-source and comprehensively verified parameterizable IIR filter IP written in Systemverilog, suitable for ASIC and FPGA applications. It can also be used to for educational purposes to learn more about concepts such as RTL developement of DSP algorithms and also can serve as an example for learning about UVM methodology with free open-source tools. 
 
+## Table of Contents
+- [Deliverables](#deliverables)
+- [Required Tools](#required-tools)
+- [How to run the simulations](#how-to-run-the-simulations)
+- [Test results](#test-results)
+- [RTL Verification status](#rtl-verification-status)
+- [Details about RTL design decisions](#details-about-rtl-design-decisions)
+- [C model verification against the Matlab](#c-model-verification-against-the-matlab)
+
 ## Deliverables
 - Parameterizable Systemverilog RTL source code for the IP
 - UVM testbench witten in Systemverilog compatible with industrial simulation tools
