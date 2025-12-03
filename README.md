@@ -43,7 +43,7 @@ For my personal work flow I have developed a Makefile that can be used to build 
   - `make regression_coco`
   - `make regression_all`
 
-## Verification status
+## RTL Verification status
 The main testbench for verification of this IP is the one which is written in Pyhton and can be run with other open-source tools. Provided testsuite for Python testbench passes 100% line coverage with Verilator and different functional aspects of the design have been stressed. Below is the list of testcases that were created for the design:
 
 - `test_const_coef`
@@ -64,3 +64,9 @@ The main testbench for verification of this IP is the one which is written in Py
 
 - The state machine is a mixture of Mealy and Moore, since for minimum latency I wanted to load in the data into the taps asap
 - The ready/valid signals on both input and output interface work copperatively.
+
+
+## C model verification against the Matlab
+In order to verify the C model functionality, the outputs from the model was compared against the Matlab model. So first specific coefficients were selected and for those specific coefficients the bode diagram was ploted in Matlab and then same objective was pursued for the C model (with floating-point implementation) but with limited data points and sampling rate. The result is brought in below:
+
+![Bode plots](images/bode_plots.png)
