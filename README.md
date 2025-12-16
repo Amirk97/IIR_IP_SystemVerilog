@@ -1,5 +1,5 @@
 # IIR Filter RTL Design and Verification
-This project aims to provide high-quality, open-source and comprehensively verified parameterizable IIR filter IP written in Systemverilog, suitable for ASIC and FPGA applications. It can also be used to for educational purposes to learn more about concepts such as RTL developement of DSP algorithms and also can serve as an example for learning about UVM methodology with free open-source tools. 
+This project aims to provide high-quality, open-source and comprehensively verified parameterizable IIR filter IP written in Systemverilog, suitable for ASIC and FPGA applications. It can also be used for educational purposes to learn more about concepts such as RTL development of DSP algorithms and also can serve as an example for learning about UVM methodology with free open-source tools. 
 
 ## Table of Contents
 - [Deliverables](#deliverables)
@@ -12,7 +12,7 @@ This project aims to provide high-quality, open-source and comprehensively verif
 
 ## Deliverables
 - Parameterizable Systemverilog RTL source code for the IP
-- UVM testbench witten in Systemverilog compatible with industrial simulation tools
+- UVM testbench written in Systemverilog compatible with industrial simulation tools
 - A more comprehensive UVM testbench written in Python, compatible with cocotb and open-source simulators
 - Floating-point and bit-exact C model used for functional verification of the algorithm
 
@@ -32,7 +32,7 @@ This project aims to provide high-quality, open-source and comprehensively verif
       - [pyvsc 0.9.4](https://github.com/fvutils/pyvsc)
 
 ## How to run the simulations
-For my personal work flow I have developed a Makefile that can be used to build the project, I have carried out the developement on an Ubuntu 24.04.2 LTS operating system. If you have an already running flow for simulating RTL, the source files could just be dragged and dropped into your flow otherwise if you are interested in my personal flow, given that the tools are setup for you similar to my setting, here are set of commands that can be used to make the simulations.
+For my personal work flow I have developed a Makefile that can be used to build the project, I have carried out the development on an Ubuntu 24.04.2 LTS operating system. If you have an already running flow for simulating RTL, the source files could just be dragged and dropped into your flow otherwise if you are interested in my personal flow, given that the tools are setup for you similar to my setting, here are set of commands that can be used to make the simulations.
 
 - For the Systemverilog UVM simulation with xcelium, I have used docker to containerized my runs and different Testcases can be run with these commands:
     - `make create_container CONTAINER_NAME=xc_env_cnt2`
@@ -75,10 +75,10 @@ The main testbench for verification of this IP is the one which is written in Py
 ![state machine](images/sm.png)
 
 - The state machine is a mixture of Mealy and Moore, since for minimum latency I wanted to load in the data into the taps asap
-- The ready/valid signals on both input and output interface work copperatively.
+- The ready/valid signals on both input and output interface work cooperatively.
 
 
 ## C model verification against the Matlab
-In order to verify the C model functionality, the outputs from the model was compared against the Matlab model. So first specific coefficients were selected and for those specific coefficients the bode diagram was ploted in Matlab and then same objective was pursued for the C model (with floating-point implementation) but with limited data points and sampling rate. The result is brought in below:
+In order to verify the C model functionality, the outputs from the model was compared against the Matlab model. So first specific coefficients were selected and for those specific coefficients the bode diagram was plotted in Matlab and then same objective was pursued for the C model (with floating-point implementation) but with limited data points and sampling rate. The result is brought in below:
 
 ![Bode plots](images/bode_plots.png)
