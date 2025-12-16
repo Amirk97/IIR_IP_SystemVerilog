@@ -274,12 +274,12 @@ module IIR
          
          always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
             if (~rst_i) begin
-               counter = '0;         
+               counter <= '0;         
             end
             else if (state ==  PROCESS) begin
-               counter += 1'b1;         
+               counter <= counter + 1'b1;         
             end else
-              counter = '0;      
+              counter <= '0;      
          end  : counter_reg
 
          always_comb begin
