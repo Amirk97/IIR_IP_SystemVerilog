@@ -1,5 +1,5 @@
-# IIR Filter RTL Design and Verification
-This project aims to provide high-quality, open-source and comprehensively verified parameterizable IIR filter IP written in Systemverilog, suitable for ASIC and FPGA applications. It can also be used for educational purposes to learn more about concepts such as RTL development of DSP algorithms and also can serve as an example for learning about UVM methodology with free open-source tools. 
+# IIR/FIR Filter RTL Design and Verification
+This project aims to provide high-quality, open-source and comprehensively verified parameterizable IIR/FIR filter IP written in Systemverilog, suitable for ASIC and FPGA applications. It can also be used for educational purposes to learn more about concepts such as RTL development of DSP algorithms and also can serve as an example for learning about UVM methodology with free open-source tools. 
 
 ## Table of Contents
 - [Deliverables](#deliverables)
@@ -11,10 +11,12 @@ This project aims to provide high-quality, open-source and comprehensively verif
 - [C model verification against the Matlab](#c-model-verification-against-the-matlab)
 
 ## Deliverables
-- Parameterizable Systemverilog RTL source code for the IP
+- Parameterizable Systemverilog RTL source code for the IIR IP
 - UVM testbench written in Systemverilog compatible with industrial simulation tools
 - A more comprehensive UVM testbench written in Python, compatible with cocotb and open-source simulators
 - Floating-point and bit-exact C model used for functional verification of the algorithm
+
+- Parameterizable Systemverilog RTL source code for the FIR IP *(currently verification suite isn't available for it, but it can be made available based on demand)
 
 ## Required Tools
 - In order to run the Systemverilog UVM testbench you will need a simulation tool that fully supports UVM, the provided testbench has been tested with Xcelium and CDNS-UVM-1.1d (24.03-s001) library
