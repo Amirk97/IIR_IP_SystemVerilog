@@ -88,4 +88,4 @@ In order to verify the C model functionality, the outputs from the model was com
 
 
 ## Support and Contribution
-If you liked this project, you can support it with giving stars, sharing or financially with the support button! Furthermore if you would like to contribute or suggest an improvement you can contact me at amirrezakazemi.ak@gmail.com
+If you liked this project, you can support it with giving stars, sharing or financially with the sponsor button! Furthermore if you would like to contribute or suggest an improvement you can contact me at amirrezakazemi.ak@gmail.com
