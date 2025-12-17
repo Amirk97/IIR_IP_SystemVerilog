@@ -9,6 +9,7 @@ This project aims to provide high-quality, open-source and comprehensively verif
 - [RTL Verification status](#rtl-verification-status)
 - [Details about RTL design decisions](#details-about-rtl-design-decisions)
 - [C model verification against the Matlab](#c-model-verification-against-the-matlab)
+- [Support and Contribution](#support-and-contribution)
 
 ## Deliverables
 - Parameterizable Systemverilog RTL source code for the IIR IP
@@ -84,3 +85,7 @@ The main testbench for verification of this IP is the one which is written in Py
 In order to verify the C model functionality, the outputs from the model was compared against the Matlab model. So first specific coefficients were selected and for those specific coefficients the bode diagram was plotted in Matlab and then same objective was pursued for the C model (with floating-point implementation) but with limited data points and sampling rate. The result is brought in below:
 
 ![Bode plots](images/bode_plots.png)
+
+
+## Support and Contribution
+If you liked this project, you can support it with giving stars, sharing or financially with the support button! Furthermore if you would like to contribute or suggest an improvement you can contact me at amirrezakazemi.ak@gmail.com

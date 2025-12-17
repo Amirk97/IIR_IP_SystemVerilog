@@ -92,11 +92,6 @@ regression_coco:
 	verilator_coverage $${COVLOGS} --write total_coverage;\
 	verilator_coverage total_coverage --annotate ./ --annotate-points --annotate-all
 
-
-project:
-	@echo "Building project: $(proj)"
-	$(VIVADO) -mode batch -source $(MAKE_PROJECT_TCL)
-
 regression_sv_uvm:
 	FILE_TYPE=tests; \
 	TESTS=$$(python3 yaml_parser.py files.yaml $$FILE_TYPE); \
@@ -171,7 +166,10 @@ clean:
 	rm -rf *.xml *.jou *.log *.str *.xpr *.runs *.cache *.hw *.ip_user_files xcelium.d .Xil compile_c *.fst sim_build test-results/*.xml total_coverage coverage_report/*.sv coverage_report/*.dat ./*.dat .bpad *.err *.diag
 	rmdir ./.simvision
 
-list:
-	@echo "Available projects:"
-	@ls scripts/*.tcl | sed 's/scripts\///;s/.tcl//'
-
+#list:
+#	@echo "Available projects:"
+#	@ls scripts/*.tcl | sed 's/scripts\///;s/.tcl//'
+#
+#project:
+#	@echo "Building project: $(proj)"
+#	$(VIVADO) -mode batch -source $(MAKE_PROJECT_TCL)
