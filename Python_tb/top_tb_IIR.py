@@ -10,19 +10,19 @@ from pyuvm import uvm_root, ConfigDB
 testcase = os.environ.get("PY_TESTCASE", "test_const_coeff")
 
 @cocotb.test(name=testcase)
-async def top_tb_IIR(IIR):
+async def top_tb_IIR(DUT):
     uvm_root().logger.info("Starting PyUVM in cocotb")
 
     # Starting the clock
-    clock = Clock(IIR.clk_i, 10, unit="ns")
+    clock = Clock(DUT.clk_i, 10, unit="ns")
     cocotb.start_soon(clock.start())
 
     # Doing the initial reset
-    await RisingEdge(IIR.clk_i)
-    IIR.rst_i.value = 0
+    await RisingEdge(DUT.clk_i)
+    DUT.rst_i.value = 0
     for _ in range(2):
-        await RisingEdge(IIR.clk_i)
-    IIR.rst_i.value = 1
+        await RisingEdge(DUT.clk_i)
+    DUT.rst_i.value = 1
     uvm_root().logger.info("[RSTDV] Reset was released here!")
     
     await uvm_root().run_test(testcase)
