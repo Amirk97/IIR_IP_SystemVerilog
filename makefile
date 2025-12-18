@@ -2,6 +2,8 @@
 
 C_FILES := $(shell python3 yaml_parser.py files.yaml "c")
 
+PY_ENV_PATH ?= /home/amir/venvs/pyuvm/bin/activate
+
 # Default project (override with 'make proj=design2')
 proj_name = 
 
@@ -62,7 +64,7 @@ cocotb: compile_c
 	rm -rf ./sim_build
 	CFG=$$(CFG_INDX=$(CFG_INDX) PY_TESTCASE=$(PY_TESTCASE) python3 ./Python_tb/cfg_pkg.py)
 	EXTRA_ARGS="$${EXTRA_ARGS} $${CFG}"
-	. /home/amir/venvs/pyuvm/bin/activate && \
+	. $(PY_ENV_PATH) && \
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim $(COCO_TRGT) PY_TESTCASE=$(PY_TESTCASE); \
 	deactivate
 
