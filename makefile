@@ -42,12 +42,13 @@ XCE_SEED ?= random
 EXTRA_ARGS += --coverage --trace-coverage 
 PYTHONPATH = $(shell pwd)/Python_tb/
 TOPLEVEL_LANG = verilog
-VERILOG_SOURCES = $(shell pwd)/rtl/*.sv
+VERILOG_SOURCES = rtl/*.sv
+VERILOG_INCLUDE_DIRS = rtl
 TOPLEVEL = IIR
 COCOTB_TEST_MODULES = top_tb_IIR
 SIM = verilator
 COCO_TRGT ?= all
-export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI PYTHONPATH VERILATOR_COMPILE_ARGS PY_TESTCASE COCOTB_FAIL_ON_ERROR CFG_INDX
+export TOPLEVEL_LANG VERILOG_SOURCES TOPLEVEL COCOTB_TEST_MODULES SIM EXTRA_ARGS GUI PYTHONPATH VERILATOR_COMPILE_ARGS PY_TESTCASE COCOTB_FAIL_ON_ERROR CFG_INDX VERILOG_INCLUDE_DIRS
 
 # Doesn't run reliably in terms of generated xml file
 regression_coco_pytest:
@@ -92,7 +93,8 @@ regression_coco:
 	python3 cocotb_xml_parser.py $$TESTLOGS; \
 	cd coverage_report;\
 	verilator_coverage $${COVLOGS} --write total_coverage;\
-	verilator_coverage total_coverage --annotate ./ --annotate-points --annotate-all
+	cd ..;\
+	verilator_coverage ./coverage_report/total_coverage --annotate ./coverage_report/ --annotate-points --annotate-all
 
 regression_sv_uvm:
 	FILE_TYPE=tests; \

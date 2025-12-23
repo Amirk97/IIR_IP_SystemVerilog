@@ -269,18 +269,32 @@ module IIR
       end
       else begin
          // If the latency of the process state is custom(have used pipeline), then this part helps with generating appropriate done signal
-         typedef logic unsigned [$clog2(PROCESS_DELAY):0] counter_t;   
+         typedef logic unsigned [$clog2(PROCESS_DELAY)-1:0] counter_t;   
          counter_t counter;
          
-         always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
-            if (~rst_i) begin
-               counter <= '0;         
-            end
-            else if (state ==  PROCESS) begin
-               counter <= counter + 1'b1;         
-            end else
-              counter <= '0;      
-         end  : counter_reg
+//         always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
+//            if (~rst_i) begin
+//               counter <= '0;         
+//            end
+//            else if (state ==  PROCESS) begin
+//               counter <= counter + 1'b1;         
+//            end else
+//              counter <= '0;      
+//         end  : counter_reg
+
+         logic cntr_clear, cntr_up;
+         assign cntr_clear = (state !=  PROCESS) ? 1'b1 : 1'b0;         
+         assign cntr_up = (state ==  PROCESS) ? 1'b1 : 1'b0;         
+
+         bsg_counter_clear_up #(.max_val_p(PROCESS_DELAY),
+                                .init_val_p(0),
+                                .disable_overflow_warning_p(0))
+         prcoess_delay_cntr(
+                            .clk_i(clk_i),
+                            .reset_i(~rst_i),
+                            .clear_i(cntr_clear),
+                            .up_i(cntr_up),
+                            .count_o(counter));         
 
          always_comb begin
             if (counter == counter_t'(PROCESS_DELAY-2)) begin
