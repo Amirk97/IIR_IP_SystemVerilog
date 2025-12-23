@@ -47,7 +47,7 @@ module FIR
     input logic                          ready_and_i,
 
     input logic                          clk_i,
-    input logic                          rst_i);
+    input logic                          reset_i);
    
    logic signed [DATA_WIDTH-1:0] input_tap [0:INPUT_TAPS-1];
 
@@ -74,8 +74,8 @@ module FIR
    generate
 
       for (i=0; i<INPUT_TAPS; i++) begin :  input_taps
-         always_ff @ (posedge clk_i or negedge rst_i) begin
-            if (~rst_i) begin             
+         always_ff @ (posedge clk_i or negedge reset_i) begin
+            if (~reset_i) begin             
                input_tap[i] <= '0;
                coeff_x[i] <= '0;
             end
@@ -112,8 +112,8 @@ module FIR
 
 
    // This part is adding one pipeline stage therefore PROCESS_DELAY += 1
-   always_ff @(posedge clk_i or negedge rst_i) begin
-      if (~rst_i) begin
+   always_ff @(posedge clk_i or negedge reset_i) begin
+      if (~reset_i) begin
          acc_x_reg <= '0;
          y_tap <= '0;      
       end
@@ -149,8 +149,8 @@ module FIR
    state_t  next_state;
    logic process_done;   
 
-   always_ff @(posedge clk_i or negedge rst_i) begin : FSM
-      if (~rst_i) begin
+   always_ff @(posedge clk_i or negedge reset_i) begin : FSM
+      if (~reset_i) begin
          state <= IDLE;
       end
       else begin
@@ -193,8 +193,8 @@ module FIR
       endcase
    end // always_comb
 
-   always_ff @(posedge clk_i or negedge rst_i) begin : VALID_O_READY_O
-      if (~rst_i) begin
+   always_ff @(posedge clk_i or negedge reset_i) begin : VALID_O_READY_O
+      if (~reset_i) begin
          valid_o <= 1'b0;
          ready_and_o <= 1'b0;         
       end
@@ -222,8 +222,8 @@ module FIR
          typedef logic unsigned [$clog2(PROCESS_DELAY):0] counter_t;   
          counter_t counter;
          
-         always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
-            if (~rst_i) begin
+         always_ff @(posedge clk_i or negedge reset_i) begin : counter_reg
+            if (~reset_i) begin
                counter <= '0;         
             end
             else if (state ==  PROCESS) begin

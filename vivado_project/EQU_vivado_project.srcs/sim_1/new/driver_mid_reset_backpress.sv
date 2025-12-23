@@ -18,8 +18,8 @@ class driver_mid_reset_backpress extends driver_backpress;
 
       forever begin : random_mid_reset
          @(posedge my_if.clk_i)
-           assert(std::randomize(reset_rand) with {reset_rand dist {1 := 90, 0 := 10}; });               
-         my_if.tb.rst_i = reset_rand;
+           assert(std::randomize(reset_rand) with {reset_rand dist {0 := 90, 1 := 10}; });               
+         my_if.tb.reset_i = reset_rand;
          if(reset_rand == '0)
            `uvm_info("DRIVER",
                      "Random reset asserted!",

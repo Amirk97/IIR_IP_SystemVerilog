@@ -40,7 +40,7 @@ class my_test extends uvm_test;
       super.reset_phase(phase);
       phase.raise_objection(this);  // Prevent phase from finishing
       `uvm_info("RESET_PHASE","waiting for reset", UVM_MEDIUM);     
-      @(posedge my_if.rst_i);
+      @(negedge my_if.reset_i);
       `uvm_info("RESET_PHASE","Reset was released!", UVM_MEDIUM);  
       phase.drop_objection(this);   // Let phase finish
    endtask

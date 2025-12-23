@@ -2,6 +2,8 @@ files:
   rtl:
     - ./rtl/IIR.sv
     - ./rtl/multiplier_wrapper.sv
+    - ./rtl/bsg_counter_clear_up.sv
+    - ./rtl/bsg_defines.sv
 
   tb:
     - ./model/IIR_filter.c

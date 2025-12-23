@@ -50,7 +50,7 @@ module IIR
     input logic                          ready_and_i,
 
     input logic                          clk_i,
-    input logic                          rst_i);
+    input logic                          reset_i);
    
    logic signed [DATA_WIDTH-1:0] input_tap [0:INPUT_TAPS-1];
    logic signed [DATA_WIDTH-1:0] output_tap [0:OUTPUT_TAPS-1];
@@ -88,8 +88,8 @@ module IIR
    generate
 
       for (i=0; i<INPUT_TAPS; i++) begin :  input_taps
-         always_ff @ (posedge clk_i or negedge rst_i) begin
-            if (~rst_i) begin             
+         always_ff @ (posedge clk_i) begin
+            if (reset_i) begin             
                input_tap[i] <= '0;
                coeff_x[i] <= '0;
             end
@@ -127,8 +127,8 @@ module IIR
    generate
 
       for (i=0; i<OUTPUT_TAPS; i++) begin :  output_taps
-         always_ff @ (posedge clk_i or negedge rst_i) begin
-            if (~rst_i) begin             
+         always_ff @ (posedge clk_i) begin
+            if (reset_i) begin             
                output_tap[i] <= '0;
                coeff_y[i] <= '0;
             end
@@ -161,8 +161,8 @@ module IIR
    end
 
    // This part is adding one pipeline stage therefore PROCESS_DELAY += 1
-   always_ff @(posedge clk_i or negedge rst_i) begin
-      if (~rst_i) begin
+   always_ff @(posedge clk_i) begin
+      if (reset_i) begin
          acc_x_reg <= '0;
          acc_y_reg <= '0;
          y_tap <= '0;      
@@ -199,8 +199,8 @@ module IIR
    end
 
    //Control part
-   always_ff @(posedge clk_i or negedge rst_i) begin : FSM
-      if (~rst_i) begin
+   always_ff @(posedge clk_i) begin : FSM
+      if (reset_i) begin
          state <= IDLE;
       end
       else begin
@@ -243,8 +243,8 @@ module IIR
       endcase
    end // always_comb
 
-   always_ff @(posedge clk_i or negedge rst_i) begin : VALID_O_READY_O
-      if (~rst_i) begin
+   always_ff @(posedge clk_i) begin : VALID_O_READY_O
+      if (reset_i) begin
          valid_o <= 1'b0;
          ready_and_o <= 1'b0;         
       end
@@ -271,18 +271,8 @@ module IIR
          // If the latency of the process state is custom(have used pipeline), then this part helps with generating appropriate done signal
          typedef logic unsigned [$clog2(PROCESS_DELAY)-1:0] counter_t;   
          counter_t counter;
-         
-//         always_ff @(posedge clk_i or negedge rst_i) begin : counter_reg
-//            if (~rst_i) begin
-//               counter <= '0;         
-//            end
-//            else if (state ==  PROCESS) begin
-//               counter <= counter + 1'b1;         
-//            end else
-//              counter <= '0;      
-//         end  : counter_reg
-
          logic cntr_clear, cntr_up;
+
          assign cntr_clear = (state !=  PROCESS) ? 1'b1 : 1'b0;         
          assign cntr_up = (state ==  PROCESS) ? 1'b1 : 1'b0;         
 
@@ -291,7 +281,7 @@ module IIR
                                 .disable_overflow_warning_p(0))
          prcoess_delay_cntr(
                             .clk_i(clk_i),
-                            .reset_i(~rst_i),
+                            .reset_i(reset_i),
                             .clear_i(cntr_clear),
                             .up_i(cntr_up),
                             .count_o(counter));         

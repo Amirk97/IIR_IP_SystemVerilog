@@ -47,7 +47,7 @@ class my_monitor extends uvm_monitor;
 
          begin : monitor_reset
             forever begin
-               @(negedge my_if.rst_i);
+               @(posedge my_if.reset_i);
                `uvm_info("MONITOR",
                          "Observed the reset!",
                          UVM_MEDIUM)

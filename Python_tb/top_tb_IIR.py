@@ -19,10 +19,10 @@ async def top_tb_IIR(DUT):
 
     # Doing the initial reset
     await RisingEdge(DUT.clk_i)
-    DUT.rst_i.value = 0
+    DUT.reset_i.value = 1
     for _ in range(2):
         await RisingEdge(DUT.clk_i)
-    DUT.rst_i.value = 1
+    DUT.reset_i.value = 0
     uvm_root().logger.info("[RSTDV] Reset was released here!")
     
     await uvm_root().run_test(testcase)

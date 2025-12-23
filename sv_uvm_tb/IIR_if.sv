@@ -21,7 +21,7 @@ interface IIR_if # (
    logic                   ready_and_i;
 
    logic                   clk_i;   
-   logic                   rst_i;
+   logic                   reset_i;
    
    modport tb (
                output x_i,
@@ -37,7 +37,7 @@ interface IIR_if # (
                output ready_and_i,
 
                output  clk_i,
-               output  rst_i
+               output  reset_i
                );
 
    modport dut (
@@ -54,7 +54,7 @@ interface IIR_if # (
                  input  ready_and_i,
 
                  input  clk_i,
-                 input  rst_i
+                 input  reset_i
                 );
 
 endinterface

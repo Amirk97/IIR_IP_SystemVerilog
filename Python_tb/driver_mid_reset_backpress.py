@@ -19,7 +19,7 @@ class driver_mid_reset_backpress(driver_backpress):
             await RisingEdge(self.IIR_if.dut.clk_i)
             with vsc.randomize_with(self.rand_reset):
                 vsc.dist(self.rand_reset, [
-                    vsc.weight(1, 90),
-                    vsc.weight(0, 10)])
+                    vsc.weight(0, 95),
+                    vsc.weight(1, 5)])
 
-            self.IIR_if.dut.rst_i.value = self.rand_reset.get_val()
+            self.IIR_if.dut.reset_i.value = self.rand_reset.get_val()

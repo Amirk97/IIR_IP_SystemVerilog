@@ -41,7 +41,7 @@ class monitor(uvm_monitor):
     async def monitor_reset(self):
         while True:
             await ReadOnly()
-            await FallingEdge(self.IIR_if.dut.rst_i)
+            await RisingEdge(self.IIR_if.dut.reset_i)
             self.logger.info("Observed rest")
             clib.dpi_init_filter()
             self.reset_time = get_sim_time('ns')

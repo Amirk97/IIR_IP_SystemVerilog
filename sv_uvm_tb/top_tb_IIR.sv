@@ -44,7 +44,7 @@ module top_tb_IIR;
              .valid_o(IIR_if_inst.dut.valid_o),
              .ready_and_i(IIR_if_inst.dut.ready_and_i),
              .clk_i(IIR_if_inst.dut.clk_i),
-             .rst_i(IIR_if_inst.dut.rst_i));
+             .reset_i(IIR_if_inst.dut.reset_i));
 
    
    IIR_if #(
@@ -66,7 +66,7 @@ module top_tb_IIR;
                 .valid_o(IIR_if_inst.valid_o),
                 .ready_and_i(IIR_if_inst.ready_and_i),
                 .clk_i(IIR_if_inst.clk_i),
-                .rst_i(IIR_if_inst.rst_i));
+                .reset_i(IIR_if_inst.reset_i));
 
    initial IIR_if_inst.clk_i = '0;
    always #5 IIR_if_inst.clk_i = ~IIR_if_inst.clk_i;      
@@ -77,9 +77,9 @@ module top_tb_IIR;
    end   
 
    initial begin
-      IIR_if_inst.rst_i <= 1'b0;
+      IIR_if_inst.reset_i <= 1'b1;
       repeat(2) @(posedge IIR_if_inst.clk_i);
-      IIR_if_inst.rst_i <= 1'b1;
+      IIR_if_inst.reset_i <= 1'b0;
       `uvm_info("RSTDRV","Reset was released here!", UVM_MEDIUM);    
    end
 
