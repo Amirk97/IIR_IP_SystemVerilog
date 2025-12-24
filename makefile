@@ -39,10 +39,10 @@ endif
 
 XCE_SEED ?= random
 #For Giving the params to verilator
-EXTRA_ARGS += --coverage --trace-coverage 
+EXTRA_ARGS += --coverage --trace-coverage
 PYTHONPATH = $(shell pwd)/Python_tb/
 TOPLEVEL_LANG = verilog
-VERILOG_SOURCES = rtl/*.sv
+VERILOG_SOURCES = ./waivers/IIR.vlt rtl/*.sv
 VERILOG_INCLUDE_DIRS = rtl
 TOPLEVEL = IIR
 COCOTB_TEST_MODULES = top_tb_IIR
@@ -80,7 +80,7 @@ regression_coco:
 	TESTLOGS=""; \
 	COVLOGS=""; \
 	rm test-results/test*.xml
-	rm total_coverage
+	rm coverage_report/total_coverage
 	rm coverage_report/*.sv coverage_report/*.dat *.dat
 	for t in $$TESTS;do \
 		$(MAKE) cocotb PY_TESTCASE=$$t > /dev/null; \

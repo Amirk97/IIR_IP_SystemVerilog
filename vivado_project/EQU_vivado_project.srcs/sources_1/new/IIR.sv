@@ -38,11 +38,10 @@ module IIR
    (
     input logic [DATA_WIDTH-1:0]         x_i,
     output logic [DATA_WIDTH-1:0]        y_o,
-    /* verilator coverage_off */
-    // By purpose, coeffs are limited to finite sensible values
+
     input logic signed [COEFF_WIDTH-1:0] coeff_x_i [0:INPUT_TAPS-1], 
     input logic signed [COEFF_WIDTH-1:0] coeff_y_i [0:OUTPUT_TAPS-1], 
-    /* verilator coverage_on */
+
     input logic                          valid_i,
     output logic                         ready_and_o,
 
@@ -55,11 +54,8 @@ module IIR
    logic signed [DATA_WIDTH-1:0] input_tap [0:INPUT_TAPS-1];
    logic signed [DATA_WIDTH-1:0] output_tap [0:OUTPUT_TAPS-1];
 
-   /* verilator coverage_off */
-   // By purpose, coeffs are limited to finite sensible values
    logic signed [COEFF_WIDTH-1:0] coeff_x [0:INPUT_TAPS-1];      
    logic signed [COEFF_WIDTH-1:0] coeff_y [0:OUTPUT_TAPS-1];
-   /* verilator coverage_on */
 
    logic signed [MULTIPLY_WIDTH:0] multi_prod_x [0:INPUT_TAPS-1];
    logic signed [MULTIPLY_WIDTH:0] multi_prod_y [0:OUTPUT_TAPS-1];
@@ -68,7 +64,7 @@ module IIR
    logic signed [I_ACC_WIDTH:0]    acc_x_comb ;
    logic signed [O_ACC_WIDTH:0]    acc_y_reg ;
    logic signed [O_ACC_WIDTH:0]    acc_y_comb;
-   logic signed [RES_ACC_WIDTH:0]  acc_res;
+   logic signed [RES_ACC_WIDTH-1:0]  acc_res; // "-1" because it's pre-rounding
    logic signed [RES_ACC_WIDTH:0]  acc_res_rounded;
 
    logic                           tap_en;
@@ -114,15 +110,12 @@ module IIR
       end : input_taps
    endgenerate
    
-   // Turning off the verilator lint cause it's in a loop
-   /* verilator lint_off WIDTHEXPAND */
    always_comb begin
       acc_x_comb = '0;   
       for (int i=0; i<INPUT_TAPS; i++) begin
          acc_x_comb += multi_prod_x[i];
       end
    end
-   /* verilator lint_on WIDTHEXPAND */
 
    generate
 
@@ -178,11 +171,8 @@ module IIR
    end  
    assign y_o = y_tap ;
    
-   // Rounding
-   // Turning off the verilator lint cause acc_res size is also considering the summation with rounding
-   /* verilator lint_off WIDTHEXPAND */
    assign acc_res = acc_x_reg - acc_y_reg;
-   /* verilator lint_on WIDTHEXPAND */
+   // Rounding
    assign acc_res_rounded = acc_res + ROUNDING_ERROR;  // Also summation for negative numbers since later on slicing gonna round downwards
 
    // Check for saturation
@@ -235,11 +225,10 @@ module IIR
            output_en = '1;
            next_state = IDLE; 
            end
-        // Turning coverage off cause this part is unreachable in simulation but necessary
-        /* verilator coverage_off */
+
         default:
           next_state = IDLE;
-        /* verilator coverage_on */
+
       endcase
    end // always_comb
 

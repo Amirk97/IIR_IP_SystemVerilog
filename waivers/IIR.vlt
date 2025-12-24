@@ -1,0 +1,13 @@
+`verilator_config
+
+// By purpose, coeffs are limited to finite sensible values 
+coverage_off -file "*IIR.sv" -lines 42  - 44
+coverage_off -file "*IIR.sv" -lines 57  - 58
+// Turning coverage off cause this part is unreachable in simulation but necessary
+coverage_off -file "*IIR.sv" -lines 229  - 230
+
+// Turning off the verilator lint cause it's in a loop and final result size is considering unrolled loop
+lint_off -rule WIDTHEXPAND -file "*IIR.sv" -lines 113  - 118
+    
+// Turning off the verilator lint cause RHS is goinf to safely expand to LHS in sub
+lint_off -rule WIDTHEXPAND -file "*IIR.sv" -lines 174  - 175
