@@ -140,7 +140,7 @@ compile_xcelium_tb:
 	echo $(GUI_FLAG); \
 	echo $(GUI); \
 	echo $(TESTCASE); \
-	xrun -access +rwc -elaborate -snapshot my_design -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA" +assertdebug; \
+	xrun -access +rwc -elaborate -snapshot my_design -uvm $$FILES -64bit -CFLAGS "-I./model" +assertdebug; \
 	xrun -64bit -R  $(GUI_FLAG) -snapshot my_design +UVM_TESTNAME=$(TESTCASE) -UVMLINEDEBUG -linedebug -access +rwc -uvm -logfile test-results/$(TESTCASE).log -svseed $(XCE_SEED) +assertdebug
 # -coverage all ;-covtest $(TESTCASE) -covwork ./cov/$(TESTCASE) -covoverwrite
 #	xrun $(GUI_FLAG) -clean -UVMLINEDEBUG -linedebug -access +rwc -uvm $$FILES -64bit -CFLAGS "-I./C_code_source_FPGA" +UVM_TESTNAME=$(TESTCASE) -logfile $(	TESTCASE).log
